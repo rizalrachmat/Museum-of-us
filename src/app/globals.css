@@ -199,6 +199,69 @@ html, body {
   filter: drop-shadow(0 12px 32px rgba(18, 9, 32, 0.5));
 }
 
+/* ====================================================
+   LAYAR LOADING MUSEUM (TUGAS 1)
+   ==================================================== */
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  z-index: 9999;
+  background-color: #745399;
+  background: radial-gradient(circle at center, #895B8A 0%, #745399 65%, #593A78 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 500ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.loading-screen.loading-screen-fade {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.loading-content {
+  text-align: center;
+  padding: 24px;
+}
+
+.loading-text {
+  font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(16px, 2.5vw, 24px);
+  font-weight: 500;
+  color: #FFF2B2;
+  letter-spacing: 0.04em;
+  text-shadow: 0 2px 14px rgba(30, 10, 45, 0.5);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.loading-heart {
+  display: inline-block;
+  color: #F3CE6E;
+  font-size: 1.25em;
+  filter: drop-shadow(0 0 8px rgba(243, 206, 110, 0.8));
+  animation: heartPulse 2s ease-in-out infinite;
+}
+
+@keyframes heartPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.85;
+    filter: drop-shadow(0 0 6px rgba(243, 206, 110, 0.7));
+  }
+  50% {
+    transform: scale(1.25);
+    opacity: 1;
+    filter: drop-shadow(0 0 16px rgba(255, 215, 0, 0.95));
+  }
+}
+
 /* Transparent Click Hotspot */
 .hotspot-button {
   position: absolute;
@@ -208,23 +271,58 @@ html, body {
   margin: 0;
   cursor: pointer;
   z-index: 20;
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), filter 0.25s ease;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), filter 0.25s ease, box-shadow 0.25s ease;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }
 
+/* Area ketuk di HP minimal sekitar 44x44 px */
+.hotspot-button::after,
+.cat-hotspot-button::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  min-width: 44px;
+  min-height: 44px;
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+}
+
+/* Denyut lembut sebelum interaksi pertama */
+.hotspot-button.hotspot-pulse {
+  animation: hotspotGentlePulse 2.8s ease-in-out infinite;
+}
+
+@keyframes hotspotGentlePulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(243, 206, 110, 0);
+    filter: drop-shadow(0 0 0 rgba(243, 206, 110, 0));
+  }
+  50% {
+    box-shadow: 0 0 12px 2px rgba(243, 206, 110, 0.45);
+    filter: drop-shadow(0 0 8px rgba(243, 206, 110, 0.65));
+  }
+}
+
 .hotspot-button:hover {
   transform: scale(1.05);
-  filter: drop-shadow(0 0 12px rgba(255, 215, 0, 0.8));
+  box-shadow: 0 0 16px 2px rgba(255, 215, 0, 0.7);
+  filter: drop-shadow(0 0 12px rgba(255, 215, 0, 0.85));
 }
 
 .hotspot-button:active {
-  transform: scale(0.97);
+  transform: scale(0.96);
+  box-shadow: 0 0 20px 4px rgba(255, 215, 0, 0.85);
+  filter: drop-shadow(0 0 14px rgba(255, 215, 0, 0.95));
 }
 
 .hotspot-button:focus-visible {
   outline: 2px solid #FFD700;
   outline-offset: 3px;
+  box-shadow: 0 0 14px rgba(255, 215, 0, 0.85);
 }
 
 /* Cat Hotspot */
@@ -237,8 +335,25 @@ html, body {
   cursor: pointer;
   border-radius: 50%;
   z-index: 25;
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), filter 0.25s ease;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), filter 0.25s ease, box-shadow 0.25s ease;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
   animation: catBob 2.8s infinite ease-in-out;
+}
+
+.cat-hotspot-button.cat-pulse {
+  animation: catBob 2.8s infinite ease-in-out, catGentlePulse 2.8s ease-in-out infinite;
+}
+
+@keyframes catGentlePulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(243, 206, 110, 0);
+    filter: drop-shadow(0 0 0 rgba(243, 206, 110, 0));
+  }
+  50% {
+    box-shadow: 0 0 16px 4px rgba(243, 206, 110, 0.55);
+    filter: drop-shadow(0 0 14px rgba(243, 206, 110, 0.75));
+  }
 }
 
 @keyframes catBob {
@@ -247,13 +362,20 @@ html, body {
 }
 
 .cat-hotspot-button:hover {
-  transform: scale(1.1) translateY(-2px);
+  transform: scale(1.08) translateY(-2px);
+  box-shadow: 0 0 18px 4px rgba(255, 215, 0, 0.75);
   filter: drop-shadow(0 0 16px rgba(255, 215, 0, 0.95));
+}
+
+.cat-hotspot-button:active {
+  transform: scale(0.96);
+  box-shadow: 0 0 22px 5px rgba(255, 215, 0, 0.9);
 }
 
 .cat-hotspot-button:focus-visible {
   outline: 2px solid #FFD700;
   outline-offset: 3px;
+  box-shadow: 0 0 14px rgba(255, 215, 0, 0.85);
 }
 
 /* Debug Mode Styles */
@@ -457,6 +579,12 @@ html, body {
   .museum-letter { animation: none; background-position: center, center; }
   .title-sparkle { animation: none; opacity: 0.7; }
   .museum-letter { animation: none; opacity: 1; transform: none; }
+  .loading-heart { animation: none !important; }
+  .hotspot-button.hotspot-pulse,
+  .cat-hotspot-button.cat-pulse { animation: none !important; }
+  .cat-hotspot-button { animation: none !important; }
+  .hint-pill { animation: none !important; }
+  .loading-screen { transition: opacity 200ms ease; }
 }
 
 /* ====================================================
@@ -479,11 +607,12 @@ html, body {
   letter-spacing: 0.03em;
   white-space: nowrap;
   pointer-events: none;
-  animation: hint-in 1.5s ease-out both;
-  transition: opacity .5s ease;
+  animation: hint-in 1.2s ease-out both;
+  transition: opacity 0.5s ease, transform 0.5s ease;
 }
 .hint-pill.hint-hidden {
   opacity: 0;
+  transform: translateY(6px);
   pointer-events: none;
 }
 
@@ -581,11 +710,14 @@ html, body {
   transform: scaleX(-1);
 }
 
-/* Stage Surat di Tengah */
+/* =================================================== */
+/* POPUP SURAT KERTAS KREM ELEGAN & DUA KOLOM          */
+/* =================================================== */
+
 .letter-stage-wrapper {
   position: relative;
   z-index: 110;
-  max-width: min(85dvw, 780px);
+  width: min(92vw, 840px);
   max-height: 85dvh;
   display: flex;
   align-items: center;
@@ -593,109 +725,221 @@ html, body {
   pointer-events: auto;
 }
 
-/* Container untuk Gambar Surat PNG Transparan */
-.letter-image-container {
-  max-width: min(85dvw, 760px);
+.letter-cream-card {
+  width: 100%;
   max-height: 85dvh;
+  background: linear-gradient(135deg, #FFFDF8 0%, #FAF5EE 55%, #F4EAD9 100%);
+  background-image: radial-gradient(rgba(180, 150, 110, 0.12) 1px, transparent 1px);
+  background-size: 16px 16px;
+  color: #2D1438;
+  border-radius: 24px;
+  border: 1.5px solid rgba(212, 162, 76, 0.45);
+  box-shadow:
+    0 25px 65px rgba(20, 8, 30, 0.65),
+    0 0 0 1px rgba(255, 255, 255, 0.8) inset,
+    0 0 20px rgba(212, 175, 55, 0.15);
   display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Layout Dua Kolom (Desktop: Foto kiri, Surat kanan) */
+.letter-content-layout {
+  display: grid;
+  width: 100%;
+  max-height: 85dvh;
+  overflow: hidden;
+}
+
+.letter-content-layout.has-photo {
+  grid-template-columns: 280px 1fr;
+  gap: 28px;
+  padding: 32px 36px;
+  align-items: center;
+}
+
+.letter-content-layout.no-photo {
+  grid-template-columns: 1fr;
+  padding: 36px 40px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Kolom Kiri: Foto Bingkai */
+.letter-photo-col {
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
-.letter-transparent-png {
-  max-width: min(85dvw, 760px);
-  max-height: 85dvh;
-  width: auto;
-  height: auto;
-  object-fit: contain;
-  display: block;
-  user-select: none;
-  filter: drop-shadow(0 16px 36px rgba(0, 0, 0, 0.55));
-}
-
-/* Fallback: Kartu Kertas Krem Elegan */
-.fallback-cream-card {
-  width: min(85dvw, 540px);
-  max-height: 85dvh;
-  background: #FAF6EE;
-  background-image: radial-gradient(#E8DFC8 1px, transparent 1px);
-  background-size: 14px 14px;
-  color: #2D1438;
-  border-radius: 24px;
-  border: 1px solid rgba(212, 175, 55, 0.35);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.5) inset;
-  display: flex;
-  flex-direction: column;
+.letter-photo-frame {
+  position: relative;
+  width: 100%;
+  max-width: 260px;
+  aspect-ratio: 4 / 3;
+  border-radius: 14px;
   overflow: hidden;
+  border: 3px solid #D4AF37;
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(255, 255, 255, 0.4) inset;
+  background: #2D1B42;
 }
 
-.fallback-card-header {
-  padding: 20px 24px 12px 24px;
-  border-bottom: 1.5px solid rgba(160, 130, 90, 0.2);
+.letter-photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.letter-photo-inner-shadow {
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 16px rgba(40, 10, 50, 0.4);
+  pointer-events: none;
+}
+
+.letter-photo-caption {
+  margin-top: 10px;
+  font-size: 11px;
+  font-style: italic;
+  color: #8A6D4B;
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* Kolom Kanan: Teks Surat */
+.letter-text-col {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  justify-content: space-between;
+  overflow: hidden;
+  min-height: 260px;
 }
 
-.fallback-badge {
+.letter-header-meta {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.letter-badge-tag {
   display: inline-block;
+  padding: 4px 12px;
+  border-radius: 16px;
+  background: rgba(112, 88, 163, 0.12);
+  color: #7058A3;
   font-size: 11px;
   font-weight: 700;
-  text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: #7058A3;
-  margin-bottom: 2px;
+  text-transform: uppercase;
 }
 
-.fallback-title {
+.letter-title-serif {
   font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
-  font-size: 20px;
+  font-size: clamp(20px, 2.4vw, 28px);
   font-weight: 800;
-  color: #4A2362;
+  color: #47225D;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin: 4px 0 0 0;
   line-height: 1.25;
 }
 
-.fallback-note-tag {
-  font-size: 12px;
-  font-style: italic;
-  color: #7A6048;
+.letter-gold-divider {
+  width: 100%;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent 0%, #D4AF37 50%, transparent 100%);
+  margin: 10px 0 14px 0;
 }
 
-.fallback-card-body {
-  padding: 24px;
+/* Isi Surat Scrollable */
+.letter-body-scrollable {
   overflow-y: auto;
-  max-height: calc(85dvh - 140px);
+  max-height: clamp(160px, 38vh, 280px);
+  padding-right: 8px;
+  cursor: pointer;
+  user-select: text;
 }
 
-.fallback-letter-text {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: 16px;
-  line-height: 1.8;
-  color: #241030;
+.letter-body-scrollable::-webkit-scrollbar {
+  width: 5px;
+}
+.letter-body-scrollable::-webkit-scrollbar-track {
+  background: rgba(180, 150, 110, 0.15);
+  border-radius: 4px;
+}
+.letter-body-scrollable::-webkit-scrollbar-thumb {
+  background: rgba(212, 175, 55, 0.5);
+  border-radius: 4px;
+}
+
+.letter-message-text {
+  font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(15px, 1.35vw, 17px);
+  line-height: 1.85;
+  color: #2D1438;
   white-space: pre-line;
+  margin: 0;
 }
 
-.fallback-card-footer {
-  padding: 12px 24px;
-  background: rgba(235, 225, 210, 0.5);
-  border-top: 1px solid rgba(160, 130, 90, 0.18);
+.letter-cursor {
+  display: inline-block;
+  margin-left: 2px;
+  color: #7058A3;
+  font-weight: 700;
+  animation: cursorBlink 0.75s infinite;
+}
+
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Footer Surat: "MUSEUM OF US" */
+.letter-card-footer {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(180, 150, 110, 0.22);
   display: flex;
   align-items: center;
   justify-content: space-between;
   font-size: 11px;
-  color: #6C5540;
 }
 
-.fallback-status-info {
-  font-size: 10px;
-  color: #7E5F38;
-}
-
-.fallback-footer-brand {
+.letter-footer-brand {
   font-family: 'Cinzel', serif;
   font-weight: 700;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.12em;
   color: #7058A3;
+}
+
+.letter-dev-status {
+  color: #8A6D4B;
+  font-size: 10px;
+  font-style: italic;
+}
+
+/* Responsive HP (< 768px): Foto di atas, surat di bawah, max 92vw / 85vh */
+@media (max-width: 768px) {
+  .letter-content-layout.has-photo {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 24px 20px;
+    overflow-y: auto;
+  }
+  .letter-photo-frame {
+    max-width: 200px;
+  }
+  .letter-title-serif {
+    font-size: 20px;
+  }
+  .letter-body-scrollable {
+    max-height: 32vh;
+  }
 }
 
 
@@ -721,6 +965,22 @@ html, body {
 }
 .birthday-return-button:active {
   transform: scale(0.94);
+}
+
+.blow-candle-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 28px rgba(212, 175, 55, 0.6), 0 4px 16px rgba(0,0,0,0.5) !important;
+}
+.blow-candle-button:active {
+  transform: scale(0.96);
+}
+
+.relight-candle-button:hover {
+  background: rgba(255, 255, 255, 0.28) !important;
+  transform: scale(1.04);
+}
+.relight-candle-button:active {
+  transform: scale(0.96);
 }
 
 .birthday-card-grid {

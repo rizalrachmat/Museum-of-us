@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "node sync_letters.js && next dev",
     "build": "node sync_letters.js && next build",
-    "start": "next start"
+    "start": "next start",
+    "optimize:images": "node scripts/optimize-images.js"
   },
   "dependencies": {
     "canvas-confetti": "^1.9.4",

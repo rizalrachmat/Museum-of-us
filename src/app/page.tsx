@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { GALLERY_FRAMES, CAT_HOTSPOT, FrameHotspot } from '@/data/letters';
 import LetterModal from '@/components/LetterModal';
@@ -47,8 +48,10 @@ function AnimatedTitle({ text }: { text: string }) {
 export default function MuseumOfUsPage() {
   const [activeLetter, setActiveLetter] = useState<FrameHotspot | null>(null);
   const [isBirthdayPageOpen, setIsBirthdayPageOpen] = useState(false);
-  const [hintHidden, setHintHidden] = useState(false);
-  
+  const [hasInteracted, setHasInteracted] = useState(false);
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const [isLoadingScreenMounted, setIsLoadingScreenMounted] = useState(true);
+
   // Debug mode: default OFF for final presentation; ?debug=1 or toggle to enable
   const [debugMode, setDebugMode] = useState(false);
 
@@ -60,10 +63,34 @@ export default function MuseumOfUsPage() {
     }
   }, []);
 
-  // Hide hint pill after first frame click
+  // Fade-out loading screen setelah gambar galeri selesai dimuat (±500 ms)
+  useEffect(() => {
+    if (isImageLoaded) {
+      const timer = setTimeout(() => {
+        setIsLoadingScreenMounted(false);
+      }, 550);
+      return () => clearTimeout(timer);
+    }
+  }, [isImageLoaded]);
+
+  // Petunjuk klik otomatis fade-out setelah ±10 detik jika belum ada interaksi
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setHasInteracted(true);
+    }, 10000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Klik bingkai surat: buka modal surat dan tandai interaksi pertama
   const handleFrameClick = (frame: FrameHotspot) => {
     setActiveLetter(frame);
-    if (!hintHidden) setHintHidden(true);
+    if (!hasInteracted) setHasInteracted(true);
+  };
+
+  // Klik kucing: buka tampilan ulang tahun dan tandai interaksi pertama
+  const handleCatClick = () => {
+    setIsBirthdayPageOpen(true);
+    if (!hasInteracted) setHasInteracted(true);
   };
 
   return (
@@ -103,11 +130,17 @@ export default function MuseumOfUsPage() {
             </div>
           </div>
 
-          {/* Desktop 1 Clean Image */}
-          <img
-            src="/assets/desktop-1-clean.png"
-            alt="Gallery Wall"
+          {/* Desktop 1 Clean Image (Next.js Image WebP - Kualitas 80, Priority, Rasio Presisi) */}
+          <Image
+            src="/assets/desktop-1-clean.webp"
+            alt="Museum Of Us - Dinding Galeri Kenangan"
+            width={896}
+            height={652}
+            priority
+            quality={80}
+            sizes="(max-width: 896px) 100vw, 896px"
             className="gallery-wall-image"
+            onLoad={() => setIsImageLoaded(true)}
           />
 
           {/* 21 Transparent Frame Hotspot Buttons */}
@@ -115,6 +148,9 @@ export default function MuseumOfUsPage() {
             <button
               key={frame.id}
               type="button"
+              role="button"
+              tabIndex={0}
+              disabled={!isImageLoaded}
               onClick={() => handleFrameClick(frame)}
               aria-label={`Surat ${frame.id}: ${frame.title}`}
               style={{
@@ -124,7 +160,7 @@ export default function MuseumOfUsPage() {
                 height: frame.coords.height,
                 borderRadius: frame.shape === 'oval' ? '50%' : '6px',
               }}
-              className={`hotspot-button ${debugMode ? 'debug-active' : ''}`}
+              className={`hotspot-button ${!hasInteracted ? 'hotspot-pulse' : ''} ${debugMode ? 'debug-active' : ''}`}
             >
               {debugMode && (
                 <span className="debug-label">#{frame.id}</span>
@@ -135,7 +171,10 @@ export default function MuseumOfUsPage() {
           {/* Cat Hotspot Button (Navigates to Desktop 23) */}
           <button
             type="button"
-            onClick={() => setIsBirthdayPageOpen(true)}
+            role="button"
+            tabIndex={0}
+            disabled={!isImageLoaded}
+            onClick={handleCatClick}
             aria-label="Kucing Ulang Tahun - Buka Surat Ulang Tahun Jiaa"
             style={{
               left: CAT_HOTSPOT.coords.left,
@@ -143,7 +182,7 @@ export default function MuseumOfUsPage() {
               width: CAT_HOTSPOT.coords.width,
               height: CAT_HOTSPOT.coords.height,
             }}
-            className={`cat-hotspot-button ${debugMode ? 'debug-active' : ''}`}
+            className={`cat-hotspot-button ${!hasInteracted ? 'cat-pulse' : ''} ${debugMode ? 'debug-active' : ''}`}
           >
             {debugMode && (
               <span className="debug-label" style={{ background: '#9333EA' }}>🐱 23</span>
@@ -151,9 +190,25 @@ export default function MuseumOfUsPage() {
           </button>
 
           {/* Hint Pill — bottom left to avoid cat in center-bottom */}
-          <span className={`hint-pill ${hintHidden ? 'hint-hidden' : ''}`}>
+          <span className={`hint-pill ${hasInteracted ? 'hint-hidden' : ''}`}>
             klik bingkai untuk membuka surat • klik kucing untuk kejutan ulang tahun
           </span>
+        </div>
+      )}
+
+      {/* Layar Loading Sederhana (TUGAS 1) — Menutup layar sampai gambar galeri selesai dimuat */}
+      {isLoadingScreenMounted && (
+        <div
+          className={`loading-screen ${isImageLoaded ? 'loading-screen-fade' : ''}`}
+          aria-live="polite"
+          aria-busy={!isImageLoaded}
+        >
+          <div className="loading-content">
+            <p className="loading-text">
+              menyiapkan museum, sabar ya sayangg{' '}
+              <span className="loading-heart" aria-hidden="true">♥</span>
+            </p>
+          </div>
         </div>
       )}
 
