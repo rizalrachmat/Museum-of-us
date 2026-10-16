@@ -4,12 +4,27 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { BIRTHDAY_DATA } from '@/data/letters';
 import BirthdayCake from './BirthdayCake';
+import { useTypewriter } from '@/hooks/useTypewriter';
 
 interface BirthdayViewProps {
   onBack: () => void;
 }
 
 export default function BirthdayView({ onBack }: BirthdayViewProps) {
+  // Efek mengetik otomatis untuk judul dan isi surat
+  const {
+    displayedTitle,
+    displayedContent,
+    isCompleted,
+    showCursor,
+    cursorLocation,
+    cursorFading,
+    skip,
+  } = useTypewriter({
+    title: BIRTHDAY_DATA.title,
+    content: BIRTHDAY_DATA.content,
+  });
+
   return (
     <div
       className="birthday-view-container"
@@ -95,6 +110,8 @@ export default function BirthdayView({ onBack }: BirthdayViewProps) {
         {/* Left Column: Letter / Message Card */}
         <div
           className="birthday-letter-side"
+          onClick={skip}
+          title={!isCompleted ? 'Klik di mana saja pada kartu untuk menampilkan seluruh teks' : undefined}
           style={{
             padding: '40px 48px',
             display: 'flex',
@@ -103,6 +120,7 @@ export default function BirthdayView({ onBack }: BirthdayViewProps) {
             background: 'linear-gradient(180deg, #FFFFFF 0%, #FAF5EE 100%)',
             borderRight: '1px solid rgba(112, 88, 163, 0.15)',
             overflowY: 'auto',
+            cursor: !isCompleted ? 'pointer' : 'default',
           }}
         >
           <div>
@@ -124,35 +142,93 @@ export default function BirthdayView({ onBack }: BirthdayViewProps) {
               Special Birthday Edition
             </div>
 
-            {/* Title: Exact Text from Figma */}
-            <h1
-              className="birthday-title"
-              style={{
-                fontFamily: "'Cinzel', 'Playfair Display', Georgia, serif",
-                fontSize: 'clamp(24px, 3.2vw, 36px)',
-                fontWeight: 800,
-                color: '#47225D',
-                letterSpacing: '-0.02em',
-                lineHeight: 1.25,
-                marginBottom: '24px',
-              }}
-            >
-              {BIRTHDAY_DATA.title}
-            </h1>
+            {/* Title: Typing Animation & Layout Reservation */}
+            <div className="birthday-text-box" style={{ marginBottom: '24px' }}>
+              {/* Ghost full title (reservasi dimensi, CLS = 0) */}
+              <h1
+                aria-hidden="true"
+                className="birthday-title birthday-text-ghost"
+                style={{
+                  fontFamily: "'Cinzel', 'Playfair Display', Georgia, serif",
+                  fontSize: 'clamp(24px, 3.2vw, 36px)',
+                  fontWeight: 800,
+                  color: '#47225D',
+                  letterSpacing: '-0.02em',
+                  lineHeight: 1.25,
+                  margin: 0,
+                }}
+              >
+                {BIRTHDAY_DATA.title}
+              </h1>
 
-            {/* Letter Content: Exact Text from Prompt */}
-            <p
-              className="birthday-content"
-              style={{
-                fontFamily: "'Playfair Display', Georgia, serif",
-                fontSize: 'clamp(15px, 1.4vw, 17px)',
-                lineHeight: 1.85,
-                color: '#35203A',
-                whiteSpace: 'pre-line',
-              }}
-            >
-              {BIRTHDAY_DATA.content}
-            </p>
+              {/* Typed Title: Accessible for screen readers */}
+              <h1
+                className="birthday-title birthday-text-typed"
+                aria-label={BIRTHDAY_DATA.title}
+                style={{
+                  fontFamily: "'Cinzel', 'Playfair Display', Georgia, serif",
+                  fontSize: 'clamp(24px, 3.2vw, 36px)',
+                  fontWeight: 800,
+                  color: '#47225D',
+                  letterSpacing: '-0.02em',
+                  lineHeight: 1.25,
+                  margin: 0,
+                }}
+              >
+                <span aria-hidden="true">
+                  {displayedTitle}
+                  {showCursor && cursorLocation === 'title' && (
+                    <span
+                      className={`typewriter-cursor ${cursorFading ? 'typewriter-cursor-fading' : ''}`}
+                      aria-hidden="true"
+                    />
+                  )}
+                </span>
+              </h1>
+            </div>
+
+            {/* Letter Content: Typing Animation & Layout Reservation */}
+            <div className="birthday-text-box">
+              {/* Ghost full content (reservasi dimensi, CLS = 0) */}
+              <p
+                aria-hidden="true"
+                className="birthday-content birthday-text-ghost"
+                style={{
+                  fontFamily: "'Playfair Display', Georgia, serif",
+                  fontSize: 'clamp(15px, 1.4vw, 17px)',
+                  lineHeight: 1.85,
+                  color: '#35203A',
+                  whiteSpace: 'pre-line',
+                  margin: 0,
+                }}
+              >
+                {BIRTHDAY_DATA.content}
+              </p>
+
+              {/* Typed Content: Accessible for screen readers */}
+              <p
+                className="birthday-content birthday-text-typed"
+                aria-label={BIRTHDAY_DATA.content}
+                style={{
+                  fontFamily: "'Playfair Display', Georgia, serif",
+                  fontSize: 'clamp(15px, 1.4vw, 17px)',
+                  lineHeight: 1.85,
+                  color: '#35203A',
+                  whiteSpace: 'pre-line',
+                  margin: 0,
+                }}
+              >
+                <span aria-hidden="true">
+                  {displayedContent}
+                  {showCursor && cursorLocation === 'content' && (
+                    <span
+                      className={`typewriter-cursor ${cursorFading ? 'typewriter-cursor-fading' : ''}`}
+                      aria-hidden="true"
+                    />
+                  )}
+                </span>
+              </p>
+            </div>
           </div>
 
           {/* Footer Signature */}
@@ -167,6 +243,8 @@ export default function BirthdayView({ onBack }: BirthdayViewProps) {
               fontSize: '12px',
               color: '#7058A3',
               fontWeight: 600,
+              opacity: isCompleted ? 1 : 0.45,
+              transition: 'opacity 0.6s ease',
             }}
           >
             <span>Museum Of Us</span>

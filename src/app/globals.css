@@ -991,3 +991,60 @@ html, body {
     overflow-y: auto;
   }
 }
+
+/* =================================================== */
+/* TYPEWRITER CURSOR & TEXT RESERVATION (Birthday)     */
+/* =================================================== */
+.typewriter-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.05em;
+  background-color: #47225D;
+  margin-left: 2px;
+  margin-right: 1px;
+  vertical-align: -0.1em;
+  border-radius: 1px;
+  animation: typewriterCursorBlink 1s infinite;
+  transition: opacity 0.4s ease;
+  will-change: opacity;
+}
+
+.typewriter-cursor-fading {
+  opacity: 0 !important;
+}
+
+@keyframes typewriterCursorBlink {
+  0%, 45% {
+    opacity: 1;
+  }
+  50%, 95% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.birthday-text-box {
+  display: grid;
+  position: relative;
+}
+
+.birthday-text-ghost {
+  grid-area: 1 / 1;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  user-select: none !important;
+}
+
+.birthday-text-typed {
+  grid-area: 1 / 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .typewriter-cursor {
+    display: none !important;
+    animation: none !important;
+  }
+}
+
