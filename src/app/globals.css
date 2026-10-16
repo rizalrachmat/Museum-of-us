@@ -1048,3 +1048,244 @@ html, body {
   }
 }
 
+/* =================================================== */
+/* CANDLE FLAME & BLOW ANIMATIONS (Birthday Cake)      */
+/* =================================================== */
+
+/* Api Lilin Normal & Flicker Halus */
+.cake-flame {
+  width: 14px;
+  height: 22px;
+  border-radius: 50% 50% 35% 35%;
+  margin-bottom: 2px;
+  background: radial-gradient(ellipse at bottom, #FFF7C2 0%, #FFA726 50%, #FF5722 90%);
+  box-shadow: 0 0 12px #FFB300, 0 0 22px rgba(255, 179, 0, 0.65), 0 0 32px rgba(255, 120, 0, 0.3);
+  transform-origin: center bottom;
+  will-change: transform, opacity;
+  animation: flameFlicker 1.1s ease-in-out infinite;
+}
+
+.cake-flame-0 {
+  animation-duration: 1.05s;
+  animation-delay: 0s;
+}
+
+.cake-flame-1 {
+  animation-duration: 1.25s;
+  animation-delay: 0.2s;
+}
+
+.cake-flame-2 {
+  animation-duration: 0.95s;
+  animation-delay: 0.45s;
+}
+
+@keyframes flameFlicker {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  25% {
+    transform: scale(1.05, 0.95) rotate(-1.5deg);
+    opacity: 0.93;
+  }
+  50% {
+    transform: scale(0.95, 1.06) rotate(1.8deg);
+    opacity: 1;
+  }
+  75% {
+    transform: scale(1.03, 0.97) rotate(-0.8deg);
+    opacity: 0.92;
+  }
+}
+
+/* Api Bergoyang Kencang saat ditiup (Wobble ±300ms) */
+.cake-flame-wobble {
+  animation: flameBlowWobble 280ms ease-in-out infinite !important;
+}
+
+@keyframes flameBlowWobble {
+  0% {
+    transform: scale(1.15, 0.75) rotate(18deg);
+    opacity: 0.95;
+  }
+  50% {
+    transform: scale(0.85, 0.65) rotate(-22deg);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1.2, 0.7) rotate(20deg);
+    opacity: 0.9;
+  }
+}
+
+/* Api Muncul Kembali dari Kecil ke Besar saat Dinyalakan Lagi */
+.cake-flame-igniting {
+  animation: flameIgnite 380ms cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+}
+
+@keyframes flameIgnite {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  65% {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Asap Tipis saat Lilin Padam (±1s naik dan memudar) */
+.candle-smoke-wrap {
+  position: absolute;
+  top: -8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+}
+
+.candle-smoke-puff {
+  display: block;
+  border-radius: 50%;
+  background: rgba(240, 240, 250, 0.55);
+  filter: blur(2px);
+  will-change: transform, opacity;
+  animation: smokeRise 1000ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.candle-smoke-puff-1 {
+  width: 7px;
+  height: 10px;
+}
+
+.candle-smoke-puff-2 {
+  width: 9px;
+  height: 12px;
+  margin-top: -3px;
+  animation-delay: 140ms;
+}
+
+@keyframes smokeRise {
+  0% {
+    opacity: 0.7;
+    transform: translateY(0) scale(0.8) rotate(0deg);
+  }
+  45% {
+    opacity: 0.45;
+    transform: translateY(-12px) scale(1.4) rotate(8deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-26px) scale(2.1) rotate(-14deg);
+  }
+}
+
+/* Hati Kecil Melayang Naik dari Kue */
+.floating-hearts-wrap {
+  position: absolute;
+  top: 15%;
+  left: 0;
+  right: 0;
+  height: 130px;
+  pointer-events: none;
+  overflow: visible;
+  z-index: 15;
+}
+
+.floating-heart-item {
+  position: absolute;
+  bottom: 0;
+  opacity: 0;
+  will-change: transform, opacity;
+  animation: heartFloatRise 2.4s ease-out forwards;
+  filter: drop-shadow(0 0 6px currentColor);
+  user-select: none;
+}
+
+@keyframes heartFloatRise {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0.6) rotate(0deg);
+  }
+  20% {
+    opacity: 0.95;
+    transform: translateY(-24px) scale(1.15) rotate(-8deg);
+  }
+  60% {
+    opacity: 0.8;
+    transform: translateY(-58px) scale(1) rotate(6deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-95px) scale(0.85) rotate(-12deg);
+  }
+}
+
+/* Teks Harapan Ulang Tahun (Fade-in + Naik Halus) */
+.birthday-wish-text {
+  animation: wishFadeInUp 650ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes wishFadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Tombol Aksi Kue (Tiup Lilin & Nyalakan Lagi) */
+.cake-action-button {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.cake-action-button:hover:not(:disabled) {
+  transform: scale(1.05);
+}
+
+.cake-action-button:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.cake-action-button:disabled {
+  opacity: 0.6 !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+}
+
+/* Prefer Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .cake-flame {
+    animation: none !important;
+  }
+  .cake-flame-wobble {
+    animation: none !important;
+  }
+  .cake-flame-igniting {
+    animation: none !important;
+  }
+  .candle-smoke-puff {
+    display: none !important;
+  }
+  .floating-heart-item {
+    display: none !important;
+  }
+  .birthday-wish-text {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .cake-action-button {
+    transition: none !important;
+  }
+}
+
+
