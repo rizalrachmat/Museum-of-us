@@ -17,6 +17,123 @@ export const TICKET_TEXT_CONFIG = {
   buttonAriaLabel: 'Masuk ke galeri Museum Of Us',
 };
 
+/**
+ * =======================================================================
+ * DATA HIASAN BERANIMASI LATAR BELAKANG TIKET (Statis & Bebas Mismatch)
+ * =======================================================================
+ */
+
+// 1. Hati Melayang (Terkonsentrasi di Sisi Kiri & Kanan Layar)
+const TICKET_FLOATING_HEARTS = [
+  // Sisi Kiri (left: 4% - 24%)
+  { left: '4%', size: 20, duration: 14, delay: 0, drift: 18, color: '#F3CE6E', opacity: 0.28 },
+  { left: '10%', size: 14, duration: 18, delay: 3, drift: -15, color: '#D8BFD8', opacity: 0.35 },
+  { left: '18%', size: 24, duration: 12, delay: 1.5, drift: 22, color: '#F3CE6E', opacity: 0.22 },
+  { left: '7%', size: 16, duration: 20, delay: 5, drift: -18, color: '#E6E6FA', opacity: 0.3 },
+  { left: '22%', size: 13, duration: 16, delay: 7, drift: 15, color: '#D4AF37', opacity: 0.25, desktopOnly: true },
+  { left: '13%', size: 26, duration: 22, delay: 9, drift: -24, color: '#D8BFD8', opacity: 0.18, desktopOnly: true },
+
+  // Sisi Kanan (left: 77% - 96%)
+  { left: '78%', size: 22, duration: 15, delay: 1, drift: -20, color: '#F3CE6E', opacity: 0.3 },
+  { left: '85%', size: 15, duration: 19, delay: 4, drift: 18, color: '#E6E6FA', opacity: 0.32 },
+  { left: '92%', size: 26, duration: 13, delay: 2, drift: -22, color: '#D4AF37', opacity: 0.2 },
+  { left: '82%', size: 12, duration: 21, delay: 6, drift: 16, color: '#D8BFD8', opacity: 0.35 },
+  { left: '88%', size: 18, duration: 17, delay: 8, drift: -18, color: '#F3CE6E', opacity: 0.28, desktopOnly: true },
+  { left: '95%', size: 24, duration: 22, delay: 10, drift: 24, color: '#E6E6FA', opacity: 0.18, desktopOnly: true },
+];
+
+// 2. Kilau Bintang 4 Sudut (Tersebar di Pinggir dan Sudut Layar)
+const TICKET_STARS = [
+  // Pinggir & Sudut Kiri
+  { top: '9%', left: '8%', size: 14, duration: 3.2, delay: 0 },
+  { top: '24%', left: '15%', size: 18, duration: 4.0, delay: 1.2 },
+  { top: '44%', left: '6%', size: 12, duration: 2.8, delay: 0.5 },
+  { top: '65%', left: '12%', size: 16, duration: 3.6, delay: 2.1 },
+  { top: '84%', left: '7%', size: 15, duration: 3.0, delay: 1.5 },
+  { top: '32%', left: '4%', size: 11, duration: 3.4, delay: 2.8, desktopOnly: true },
+  { top: '76%', left: '18%', size: 13, duration: 4.2, delay: 0.8, desktopOnly: true },
+
+  // Pinggir & Sudut Kanan
+  { top: '10%', left: '90%', size: 16, duration: 3.5, delay: 0.3 },
+  { top: '26%', left: '83%', size: 13, duration: 2.9, delay: 1.8 },
+  { top: '48%', left: '93%', size: 17, duration: 4.1, delay: 0.9 },
+  { top: '68%', left: '86%', size: 14, duration: 3.3, delay: 2.4 },
+  { top: '87%', left: '91%', size: 15, duration: 3.8, delay: 1.1 },
+  { top: '18%', left: '94%', size: 12, duration: 3.1, delay: 1.6, desktopOnly: true },
+  { top: '79%', left: '82%', size: 14, duration: 3.7, delay: 2.7, desktopOnly: true },
+];
+
+// 5. Siluet Bingkai Museum Melayang di Pinggir Kiri & Kanan (Desktop Only)
+const TICKET_FRAMES = [
+  { top: '18%', left: '5%', size: 48, rot: -6, duration: 7.5, delay: 0, shape: 'rect' as const },
+  { top: '46%', left: '4%', size: 44, rot: 5, duration: 8.5, delay: 1.5, shape: 'oval' as const },
+  { top: '72%', left: '8%', size: 52, rot: -4, duration: 9.0, delay: 0.8, shape: 'rect' as const },
+  { top: '22%', left: '88%', size: 50, rot: 6, duration: 8.0, delay: 1.0, shape: 'oval' as const },
+  { top: '68%', left: '86%', size: 46, rot: -5, duration: 7.8, delay: 2.0, shape: 'rect' as const },
+];
+
+/**
+ * 4. Ornamen Sudut Garis Emas Vintage (SVG Inline)
+ */
+function CornerOrnament({
+  position,
+}: {
+  position: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
+}) {
+  const getStyle = (): React.CSSProperties => {
+    switch (position) {
+      case 'top-left':
+        return { top: '16px', left: '16px' };
+      case 'top-right':
+        return { top: '16px', right: '16px', transform: 'scaleX(-1)' };
+      case 'bottom-left':
+        return { bottom: '16px', left: '16px', transform: 'scaleY(-1)' };
+      case 'bottom-right':
+        return { bottom: '16px', right: '16px', transform: 'scale(-1, -1)' };
+    }
+  };
+
+  return (
+    <div
+      className={`ticket-corner-ornament ticket-corner-${position}`}
+      style={getStyle()}
+      aria-hidden="true"
+    >
+      <svg
+        width="100%"
+        height="100%"
+        viewBox="0 0 74 74"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          className="corner-drawn-path"
+          d="M4 70 V 22 C 4 12, 12 4, 22 4 H 70"
+          stroke="#D4AF37"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+        />
+        <path
+          className="corner-drawn-path"
+          d="M12 70 V 28 C 12 19, 19 12, 28 12 H 70"
+          stroke="#F3CE6E"
+          strokeWidth="1"
+          strokeLinecap="round"
+          opacity="0.65"
+        />
+        <circle cx="22" cy="22" r="3" fill="#D4AF37" opacity="0.8" />
+        <path
+          className="corner-drawn-path"
+          d="M5 5 L15 15"
+          stroke="#D4AF37"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+        />
+      </svg>
+    </div>
+  );
+}
+
 interface MuseumTicketModalProps {
   isImageLoaded: boolean;
   onEnter: () => void;
@@ -56,7 +173,149 @@ export default function MuseumTicketModal({
       {/* Pattern Hati Latar Belakang Samar */}
       <div className="ticket-backdrop-heart-pattern" aria-hidden="true" />
 
-      {/* Kontainer Utama Tiket */}
+      {/* ========================================================
+          LAPISAN HIASAN BERANIMASI DI LATAR BELAKANG TIKET
+          ======================================================== */}
+      <div className="ticket-decor-layer" aria-hidden="true">
+        {/* 3. Sinar Lampu Galeri / Museum Spotlight (Kiri Atas & Kanan Atas) */}
+        <div className="ticket-spotlight ticket-spotlight-left" />
+        <div className="ticket-spotlight ticket-spotlight-right" />
+
+        {/* 4. Ornamen Sudut Emas Vintage di 4 Sudut Layar */}
+        <CornerOrnament position="top-left" />
+        <CornerOrnament position="top-right" />
+        <CornerOrnament position="bottom-left" />
+        <CornerOrnament position="bottom-right" />
+
+        {/* 5. Siluet Bingkai Museum Melayang (Sisi Kiri & Kanan) */}
+        {TICKET_FRAMES.map((f, i) => (
+          <div
+            key={i}
+            className="ticket-silhouette-frame"
+            style={
+              {
+                top: f.top,
+                left: f.left,
+                animationDuration: `${f.duration}s`,
+                animationDelay: `${f.delay}s`,
+                '--rot': `${f.rot}deg`,
+              } as React.CSSProperties
+            }
+          >
+            {f.shape === 'rect' ? (
+              <svg
+                width={f.size}
+                height={f.size * 1.3}
+                viewBox="0 0 50 65"
+                fill="none"
+              >
+                <rect
+                  x="2"
+                  y="2"
+                  width="46"
+                  height="61"
+                  rx="4"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeDasharray="4 2.5"
+                />
+                <rect
+                  x="6"
+                  y="6"
+                  width="38"
+                  height="53"
+                  rx="2"
+                  stroke="currentColor"
+                  strokeWidth="1"
+                  opacity="0.6"
+                />
+              </svg>
+            ) : (
+              <svg
+                width={f.size}
+                height={f.size * 1.25}
+                viewBox="0 0 50 62"
+                fill="none"
+              >
+                <ellipse
+                  cx="25"
+                  cy="31"
+                  rx="22"
+                  ry="28"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                />
+                <ellipse
+                  cx="25"
+                  cy="31"
+                  rx="17"
+                  ry="23"
+                  stroke="currentColor"
+                  strokeWidth="1"
+                  strokeDasharray="3 2"
+                  opacity="0.6"
+                />
+              </svg>
+            )}
+          </div>
+        ))}
+
+        {/* 1. Hati Melayang di Latar Belakang (Sisi Kiri & Kanan) */}
+        {TICKET_FLOATING_HEARTS.map((h, i) => (
+          <span
+            key={i}
+            className={`ticket-floating-heart ${
+              h.desktopOnly ? 'ticket-decor-desktop-only' : ''
+            }`}
+            style={
+              {
+                left: h.left,
+                fontSize: `${h.size}px`,
+                color: h.color,
+                animationDuration: `${h.duration}s`,
+                animationDelay: `${h.delay}s`,
+                '--target-opacity': h.opacity,
+                '--drift-x': `${h.drift}px`,
+              } as React.CSSProperties
+            }
+          >
+            ♥
+          </span>
+        ))}
+
+        {/* 2. Kilau Bintang 4 Sudut (Twinkling Stars) */}
+        {TICKET_STARS.map((s, i) => (
+          <span
+            key={i}
+            className={`ticket-star-sparkle ${
+              s.desktopOnly ? 'ticket-decor-desktop-only' : ''
+            }`}
+            style={
+              {
+                top: s.top,
+                left: s.left,
+                width: `${s.size}px`,
+                height: `${s.size}px`,
+                animationDuration: `${s.duration}s`,
+                animationDelay: `${s.delay}s`,
+              } as React.CSSProperties
+            }
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              width="100%"
+              height="100%"
+            >
+              <path d="M12 0L14.5 9.5L24 12L14.5 14.5L12 24L9.5 14.5L0 12L9.5 9.5Z" />
+            </svg>
+          </span>
+        ))}
+      </div>
+
+      {/* ========================================================
+          KARTU UTAMA TIKET MASUK (Z-Index Lebih Tinggi & Center)
+          ======================================================== */}
       <div className="ticket-modal-wrapper">
         <div
           className={`ticket-vintage-card ${
