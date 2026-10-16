@@ -7,6 +7,7 @@ import { GALLERY_FRAMES, CAT_HOTSPOT, FrameHotspot } from '@/data/letters';
 import LetterModal from '@/components/LetterModal';
 import BirthdayView from '@/components/BirthdayView';
 import MobileRotateBanner from '@/components/MobileRotateBanner';
+import MuseumTicketModal from '@/components/MuseumTicketModal';
 
 /* Gold museum title: letters enter staggered then settle into razor-sharp text with shimmer */
 function AnimatedTitle({ text }: { text: string }) {
@@ -50,7 +51,7 @@ export default function MuseumOfUsPage() {
   const [isBirthdayPageOpen, setIsBirthdayPageOpen] = useState(false);
   const [hasInteracted, setHasInteracted] = useState(false);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
-  const [isLoadingScreenMounted, setIsLoadingScreenMounted] = useState(true);
+  const [isTicketMounted, setIsTicketMounted] = useState(true);
 
   // Debug mode: default OFF for final presentation; ?debug=1 or toggle to enable
   const [debugMode, setDebugMode] = useState(false);
@@ -63,23 +64,15 @@ export default function MuseumOfUsPage() {
     }
   }, []);
 
-  // Fade-out loading screen setelah gambar galeri selesai dimuat (±500 ms)
+  // Petunjuk klik baru mulai menghitung waktu fade-out (±10 detik) setelah tiket ditutup
   useEffect(() => {
-    if (isImageLoaded) {
+    if (!isTicketMounted) {
       const timer = setTimeout(() => {
-        setIsLoadingScreenMounted(false);
-      }, 550);
+        setHasInteracted(true);
+      }, 10000);
       return () => clearTimeout(timer);
     }
-  }, [isImageLoaded]);
-
-  // Petunjuk klik otomatis fade-out setelah ±10 detik jika belum ada interaksi
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setHasInteracted(true);
-    }, 10000);
-    return () => clearTimeout(timer);
-  }, []);
+  }, [isTicketMounted]);
 
   // Klik bingkai surat: buka modal surat dan tandai interaksi pertama
   const handleFrameClick = (frame: FrameHotspot) => {
@@ -150,7 +143,7 @@ export default function MuseumOfUsPage() {
               type="button"
               role="button"
               tabIndex={0}
-              disabled={!isImageLoaded}
+              disabled={!isImageLoaded || isTicketMounted}
               onClick={() => handleFrameClick(frame)}
               aria-label={`Surat ${frame.id}: ${frame.title}`}
               style={{
@@ -160,7 +153,7 @@ export default function MuseumOfUsPage() {
                 height: frame.coords.height,
                 borderRadius: frame.shape === 'oval' ? '50%' : '6px',
               }}
-              className={`hotspot-button ${!hasInteracted ? 'hotspot-pulse' : ''} ${debugMode ? 'debug-active' : ''}`}
+              className={`hotspot-button ${!hasInteracted && !isTicketMounted ? 'hotspot-pulse' : ''} ${debugMode ? 'debug-active' : ''}`}
             >
               {debugMode && (
                 <span className="debug-label">#{frame.id}</span>
@@ -173,7 +166,7 @@ export default function MuseumOfUsPage() {
             type="button"
             role="button"
             tabIndex={0}
-            disabled={!isImageLoaded}
+            disabled={!isImageLoaded || isTicketMounted}
             onClick={handleCatClick}
             aria-label="Kucing Ulang Tahun - Buka Surat Ulang Tahun Jiaa"
             style={{
@@ -182,34 +175,28 @@ export default function MuseumOfUsPage() {
               width: CAT_HOTSPOT.coords.width,
               height: CAT_HOTSPOT.coords.height,
             }}
-            className={`cat-hotspot-button ${!hasInteracted ? 'cat-pulse' : ''} ${debugMode ? 'debug-active' : ''}`}
+            className={`cat-hotspot-button ${!hasInteracted && !isTicketMounted ? 'cat-pulse' : ''} ${debugMode ? 'debug-active' : ''}`}
           >
             {debugMode && (
               <span className="debug-label" style={{ background: '#9333EA' }}>🐱 23</span>
             )}
           </button>
 
-          {/* Hint Pill — bottom left to avoid cat in center-bottom */}
-          <span className={`hint-pill ${hasInteracted ? 'hint-hidden' : ''}`}>
-            klik bingkai untuk membuka surat • klik kucing untuk kejutan ulang tahun
-          </span>
+          {/* Hint Pill — baru mulai muncul setelah tiket hilang, bukan sebelumnya */}
+          {!isTicketMounted && (
+            <span className={`hint-pill ${hasInteracted ? 'hint-hidden' : ''}`}>
+              klik bingkai untuk membuka surat • klik kucing untuk kejutan ulang tahun
+            </span>
+          )}
         </div>
       )}
 
-      {/* Layar Loading Sederhana (TUGAS 1) — Menutup layar sampai gambar galeri selesai dimuat */}
-      {isLoadingScreenMounted && (
-        <div
-          className={`loading-screen ${isImageLoaded ? 'loading-screen-fade' : ''}`}
-          aria-live="polite"
-          aria-busy={!isImageLoaded}
-        >
-          <div className="loading-content">
-            <p className="loading-text">
-              menyiapkan museum, sabar ya sayangg{' '}
-              <span className="loading-heart" aria-hidden="true">♥</span>
-            </p>
-          </div>
-        </div>
+      {/* Layar Pembuka: Tiket Masuk Museum Vintage (Menggabungkan Layar Loading) */}
+      {isTicketMounted && (
+        <MuseumTicketModal
+          isImageLoaded={isImageLoaded}
+          onEnter={() => setIsTicketMounted(false)}
+        />
       )}
 
       {/* Floating Debug Toggle (default off; ?debug=1 or button to enable) */}
