@@ -243,11 +243,22 @@ html, body {
   align-items: center;
   justify-content: center;
   width: 100%;
+  padding-top: 52px;
+  padding-bottom: 24px;
+}
+
+/* Wrapper Terluar Kartu Tiket + Kucing (Position relative, tanpa overflow: hidden) */
+.ticket-card-box {
+  position: relative;
+  width: min(420px, 88vw);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* Kartu Tiket Vintage Krem dengan Glow Emas Lembut Berdenyut */
 .ticket-vintage-card {
-  width: min(420px, 88vw);
+  width: 100%;
   background: linear-gradient(135deg, #FFFDF8 0%, #FAF4EB 60%, #F4ECE0 100%);
   color: #2D1442;
   border-radius: 20px;
@@ -285,20 +296,332 @@ html, body {
   }
 }
 
-/* Animasi Keluar Tiket (Bergerak sedikit ke atas sambil memudar) */
-.ticket-vintage-card-exit {
-  animation: ticketCardSlideOut 450ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+/* Animasi Getaran Tiket saat Distempel */
+.ticket-vintage-card.ticket-shaking {
+  animation: ticketStampingShake 160ms ease-in-out !important;
+}
+
+@keyframes ticketStampingShake {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(3.5px) rotate(0.4deg);
+  }
+  70% {
+    transform: translateY(-2px) rotate(-0.3deg);
+  }
+}
+
+/* Stempel "VALID ♥" (Cap Bulat/Persegi Double-Border Ungu Tua) */
+.ticket-stamp-seal {
+  position: absolute;
+  top: 36%;
+  left: 50%;
+  z-index: 40;
+  pointer-events: none;
+  border: 3.5px double rgba(82, 22, 108, 0.95);
+  border-radius: 10px;
+  padding: 6px 18px;
+  color: rgba(82, 22, 108, 0.95);
+  font-family: 'Cinzel', serif;
+  font-size: clamp(20px, 3.2vw, 26px);
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 0 0 1.5px rgba(82, 22, 108, 0.4), 0 4px 14px rgba(82, 22, 108, 0.25);
+  animation: stampImpact 300ms cubic-bezier(0.12, 0.9, 0.25, 1) forwards;
   will-change: transform, opacity;
 }
 
-@keyframes ticketCardSlideOut {
+@keyframes stampImpact {
   0% {
+    transform: translate(-50%, -50%) rotate(-12deg) scale(2.2);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(-12deg) scale(1);
+    opacity: 0.92;
+  }
+}
+
+/* Sobekan Tiket: Bagian Atas & Bawah */
+.ticket-split-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.ticket-half-top {
+  position: relative;
+  width: 100%;
+  will-change: transform, opacity;
+}
+
+.ticket-half-bottom {
+  position: relative;
+  width: 100%;
+  will-change: transform, opacity;
+}
+
+/* Bagian Atas Sobek: Bergeser ke kiri atas miring -8deg & memudar */
+.ticket-half-top.ticket-torn-top {
+  animation: ticketTearTop 700ms cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+  clip-path: polygon(
+    0% 0%, 100% 0%, 100% calc(100% - 4px),
+    95% 100%, 90% calc(100% - 4px), 85% 100%, 80% calc(100% - 4px), 75% 100%, 70% calc(100% - 4px),
+    65% 100%, 60% calc(100% - 4px), 55% 100%, 50% calc(100% - 4px), 45% 100%, 40% calc(100% - 4px),
+    35% 100%, 30% calc(100% - 4px), 25% 100%, 20% calc(100% - 4px), 15% 100%, 10% calc(100% - 4px),
+    5% 100%, 0% calc(100% - 4px)
+  );
+}
+
+@keyframes ticketTearTop {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-44px, -38px) rotate(-8deg);
+    opacity: 0;
+  }
+}
+
+/* Bagian Bawah Sobek: Jatuh ke kanan bawah miring 6deg & memudar */
+.ticket-half-bottom.ticket-torn-bottom {
+  animation: ticketTearBottom 700ms cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+  clip-path: polygon(
+    0% 4px, 5% 0%, 10% 4px, 15% 0%, 20% 4px, 25% 0%, 30% 4px, 35% 0%, 40% 4px, 45% 0%,
+    50% 4px, 55% 0%, 60% 4px, 65% 0%, 70% 4px, 75% 0%, 80% 4px, 85% 0%, 90% 4px, 95% 0%,
+    100% 4px, 100% 100%, 0% 100%
+  );
+}
+
+@keyframes ticketTearBottom {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(38px, 52px) rotate(6deg);
+    opacity: 0;
+  }
+}
+
+/* ====================================================
+   TIRAI PANGGUNG BELUDRU (PANEL KIRI & KANAN)
+   ==================================================== */
+.ticket-curtains-container {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.ticket-curtain-panel {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50vw;
+  height: 100dvh;
+  background-color: #2D1442;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      #3A1D5C 0px,
+      #30164C 24px,
+      #240F3C 48px,
+      #341854 72px,
+      #3A1D5C 96px
+    );
+  will-change: transform;
+  transition: transform 1100ms cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.ticket-curtain-left {
+  left: 0;
+  box-shadow: inset -15px 0 35px rgba(12, 4, 20, 0.8), 6px 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.ticket-curtain-right {
+  right: 0;
+  box-shadow: inset 15px 0 35px rgba(12, 4, 20, 0.8), -6px 0 20px rgba(0, 0, 0, 0.5);
+}
+
+/* Rumbai / Garis Emas Tipis di Sisi Tengah Tempat Tirai Bertemu */
+.ticket-curtain-edge-gold {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1.5px;
+  background: linear-gradient(180deg, #D4AF37 0%, #FFF4D0 25%, #F3CE6E 50%, #D4AF37 75%, #A87818 100%);
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.65);
+}
+
+.ticket-curtain-left .ticket-curtain-edge-gold {
+  right: 0;
+}
+
+.ticket-curtain-right .ticket-curtain-edge-gold {
+  left: 0;
+}
+
+/* Kedua Panel Tirai Membuka ke Samping (1100 ms) */
+.ticket-curtain-left.ticket-curtain-open {
+  transform: translateX(-100%);
+}
+
+.ticket-curtain-right.ticket-curtain-open {
+  transform: translateX(100%);
+}
+
+/* ====================================================
+   KUCING PENYAMBUT BERTENGGER & GELEMBUNG UCAPAN
+   ==================================================== */
+.ticket-cat-anchor {
+  position: absolute;
+  bottom: calc(100% - 6px);
+  right: 24px;
+  z-index: 25;
+  pointer-events: none;
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  will-change: transform, opacity;
+  animation: catHopIn 600ms cubic-bezier(0.34, 1.56, 0.64, 1) 500ms forwards;
+  opacity: 0;
+  transform: translateY(28px) scale(0.85);
+}
+
+.ticket-cat-idle {
+  flex-shrink: 0;
+  animation: catIdleSway 3.5s ease-in-out infinite;
+  transform-origin: center bottom;
+}
+
+.ticket-cat-svg {
+  width: 96px;
+  height: 86px;
+  display: block;
+  filter: drop-shadow(0 4px 12px rgba(20, 8, 30, 0.35));
+}
+
+@keyframes catHopIn {
+  0% {
+    opacity: 0;
+    transform: translateY(28px) scale(0.85);
+  }
+  100% {
     opacity: 1;
     transform: translateY(0) scale(1);
   }
+}
+
+@keyframes catIdleSway {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-4px) rotate(1.8deg);
+  }
+}
+
+/* Animasi Kucing Melompat & Memudar saat Tiket Disobek */
+.ticket-cat-anchor.ticket-cat-exit {
+  animation: catHopAndFade 650ms cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+}
+
+@keyframes catHopAndFade {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  35% {
+    transform: translateY(-14px) scale(1.05);
+    opacity: 0.95;
+  }
   100% {
+    transform: translate(-32px, -45px) rotate(-10deg) scale(0.9);
     opacity: 0;
-    transform: translateY(-26px) scale(0.96);
+  }
+}
+
+/* Gelembung Ucapan Kucing (Speech Bubble) di Sebelah Kiri Kucing */
+.ticket-speech-bubble {
+  position: relative;
+  background: #FFFDF9;
+  color: #38184C;
+  padding: 8px 14px;
+  border-radius: 14px;
+  box-shadow: 0 8px 22px rgba(18, 6, 28, 0.28), 0 0 0 1px rgba(212, 175, 55, 0.55);
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.4;
+  width: max-content;
+  max-width: 210px;
+  animation: bubblePop 450ms cubic-bezier(0.16, 1, 0.3, 1) 900ms forwards;
+  opacity: 0;
+  transform: scale(0.8);
+  pointer-events: none;
+  margin-bottom: 14px;
+  user-select: none;
+}
+
+/* Ekor Gelembung Ucapan Mengarah ke Kucing di Sebelah Kanan */
+.ticket-speech-bubble::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -5px;
+  transform: translateY(-50%) rotate(45deg);
+  width: 9px;
+  height: 9px;
+  background: #FFFDF9;
+  border-top: 1px solid rgba(212, 175, 55, 0.55);
+  border-right: 1px solid rgba(212, 175, 55, 0.55);
+}
+
+@keyframes bubblePop {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Responsif Layar Kecil (< 640px) untuk Kucing & Gelembung */
+@media (max-width: 640px) {
+  .ticket-modal-wrapper {
+    padding-top: 56px;
+    padding-bottom: 20px;
+  }
+  .ticket-cat-anchor {
+    right: 14px;
+    bottom: calc(100% - 6px);
+    gap: 8px;
+  }
+  .ticket-cat-svg {
+    width: 72px !important;
+    height: 65px !important;
+  }
+  .ticket-speech-bubble {
+    max-width: min(185px, 58vw);
+    font-size: 10.5px;
+    padding: 6px 10px;
+    margin-bottom: 10px;
+    border-radius: 12px;
+  }
+  .ticket-speech-bubble::after {
+    width: 7px;
+    height: 7px;
+    right: -4px;
   }
 }
 
@@ -775,12 +1098,42 @@ html, body {
   }
 }
 
-/* Reduced Motion Support untuk Layar Tiket & Hiasan */
+/* Reduced Motion Support untuk Layar Tiket, Tirai & Hiasan */
 @media (prefers-reduced-motion: reduce) {
   .ticket-vintage-card-enter,
   .ticket-vintage-card-exit,
-  .ticket-stagger-item {
+  .ticket-stagger-item,
+  .ticket-half-top.ticket-torn-top,
+  .ticket-half-bottom.ticket-torn-bottom,
+  .ticket-cat-anchor.ticket-cat-exit {
     animation: simpleModalFadeIn 250ms ease forwards !important;
+    transform: none !important;
+  }
+  .ticket-curtain-panel {
+    transition: opacity 300ms ease !important;
+  }
+  .ticket-curtain-left.ticket-curtain-open,
+  .ticket-curtain-right.ticket-curtain-open {
+    transform: none !important;
+    opacity: 0 !important;
+  }
+  .ticket-stamp-seal {
+    animation: none !important;
+    transform: translate(-50%, -50%) rotate(-12deg) scale(1) !important;
+    opacity: 0.9 !important;
+  }
+  .ticket-cat-anchor {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .ticket-cat-idle {
+    animation: none !important;
+    transform: none !important;
+  }
+  .ticket-speech-bubble {
+    animation: none !important;
+    opacity: 1 !important;
     transform: none !important;
   }
   .ticket-shimmer-sweep {

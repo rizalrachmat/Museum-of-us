@@ -4,6 +4,14 @@ import React, { useState, useEffect, useRef } from 'react';
 
 /**
  * =======================================================================
+ * KONSTANTA TEKS STEMPEL & PESAN KUCING (Dapat diganti di sini)
+ * =======================================================================
+ */
+export const STAMP_TEXT = 'VALID ♥';
+export const WELCOME_MESSAGE = 'Selamat datang! Jangan lupa klik semua bingkai ya ♥';
+
+/**
+ * =======================================================================
  * KONSTANTA TEKS TIKET MASUK (Dapat diubah di sini)
  * =======================================================================
  */
@@ -73,7 +81,7 @@ const TICKET_FRAMES = [
 ];
 
 /**
- * 4. Ornamen Sudut Garis Emas Vintage (SVG Inline)
+ * Ornamen Sudut Garis Emas Vintage (SVG Inline)
  */
 function CornerOrnament({
   position,
@@ -134,6 +142,87 @@ function CornerOrnament({
   );
 }
 
+/**
+ * Kucing Penyambut Bertopi Pesta Ulang Tahun (SVG Vektor Tajam)
+ */
+function WelcomingPartyCat() {
+  return (
+    <svg
+      className="ticket-cat-svg"
+      width="96"
+      height="86"
+      viewBox="0 0 92 82"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      {/* Bayangan Bawah Cakar */}
+      <ellipse cx="46" cy="78" rx="30" ry="4" fill="rgba(20, 8, 30, 0.28)" />
+
+      {/* Topi Pesta Ulang Tahun (Party Cone Hat) */}
+      <g transform="translate(43, 6) rotate(8)">
+        <polygon points="12,0 0,34 24,34" fill="#6A478D" />
+        <path d="M4 28 Q12 25 20 28" stroke="#F3CE6E" strokeWidth="2.5" strokeLinecap="round" />
+        <path d="M7 18 Q12 15 17 18" stroke="#F3CE6E" strokeWidth="2" strokeLinecap="round" />
+        <path d="M9 9 Q12 7 15 9" stroke="#F3CE6E" strokeWidth="1.5" strokeLinecap="round" />
+        <circle cx="12" cy="-1" r="4" fill="#FFD700" />
+        <circle cx="12" cy="-1" r="2.5" fill="#FFF4D0" />
+      </g>
+
+      {/* Telinga Kiri */}
+      <polygon points="18,36 10,14 32,24" fill="#FFB074" />
+      <polygon points="19,33 13,18 29,24" fill="#FFAAA6" />
+
+      {/* Telinga Kanan */}
+      <polygon points="74,36 82,14 60,24" fill="#FFB074" />
+      <polygon points="73,33 79,18 63,24" fill="#FFAAA6" />
+
+      {/* Kepala Kucing Bulat Imut */}
+      <ellipse cx="46" cy="46" rx="36" ry="30" fill="#FFB074" />
+      {/* Pipi & Moncong Krem Cerah */}
+      <ellipse cx="46" cy="52" rx="26" ry="18" fill="#FFF3E0" />
+
+      {/* Mata Kiri Berbinar */}
+      <ellipse cx="32" cy="42" rx="5" ry="6.5" fill="#241030" />
+      <circle cx="30.5" cy="40" r="2.2" fill="#FFFFFF" />
+      <circle cx="33.5" cy="44.5" r="1.1" fill="#FFFFFF" />
+
+      {/* Mata Kanan Berbinar */}
+      <ellipse cx="60" cy="42" rx="5" ry="6.5" fill="#241030" />
+      <circle cx="58.5" cy="40" r="2.2" fill="#FFFFFF" />
+      <circle cx="61.5" cy="44.5" r="1.1" fill="#FFFFFF" />
+
+      {/* Pipi Merona (Blush Pink) */}
+      <ellipse cx="23" cy="50" rx="4.5" ry="3" fill="rgba(255, 130, 150, 0.45)" />
+      <ellipse cx="69" cy="50" rx="4.5" ry="3" fill="rgba(255, 130, 150, 0.45)" />
+
+      {/* Hidung Segitiga Pink Lucu */}
+      <polygon points="46,47 43.5,44 48.5,44" fill="#E86A82" />
+
+      {/* Mulut Melengkung Imut (ω) */}
+      <path d="M42 49 Q44 52 46 49 Q48 52 50 49" stroke="#4A2035" strokeWidth="1.5" strokeLinecap="round" fill="none" />
+
+      {/* Kumis Kiri */}
+      <line x1="14" y1="46" x2="26" y2="48" stroke="#4A2035" strokeWidth="1.2" strokeLinecap="round" opacity="0.65" />
+      <line x1="13" y1="52" x2="25" y2="52" stroke="#4A2035" strokeWidth="1.2" strokeLinecap="round" opacity="0.65" />
+      <line x1="15" y1="58" x2="27" y2="56" stroke="#4A2035" strokeWidth="1.2" strokeLinecap="round" opacity="0.65" />
+
+      {/* Kumis Kanan */}
+      <line x1="78" y1="46" x2="66" y2="48" stroke="#4A2035" strokeWidth="1.2" strokeLinecap="round" opacity="0.65" />
+      <line x1="79" y1="52" x2="67" y2="52" stroke="#4A2035" strokeWidth="1.2" strokeLinecap="round" opacity="0.65" />
+      <line x1="77" y1="58" x2="65" y2="56" stroke="#4A2035" strokeWidth="1.2" strokeLinecap="round" opacity="0.65" />
+
+      {/* Dua Cakar Depan Kecil Bersandar di Tepi Atas Tiket */}
+      <ellipse cx="32" cy="74" rx="7.5" ry="6" fill="#FFF3E0" stroke="#FFB074" strokeWidth="1.5" />
+      <ellipse cx="60" cy="74" rx="7.5" ry="6" fill="#FFF3E0" stroke="#FFB074" strokeWidth="1.5" />
+      <line x1="30" y1="73" x2="30" y2="76" stroke="#FFB074" strokeWidth="1" strokeLinecap="round" />
+      <line x1="34" y1="73" x2="34" y2="76" stroke="#FFB074" strokeWidth="1" strokeLinecap="round" />
+      <line x1="58" y1="73" x2="58" y2="76" stroke="#FFB074" strokeWidth="1" strokeLinecap="round" />
+      <line x1="62" y1="73" x2="62" y2="76" stroke="#FFB074" strokeWidth="1" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 interface MuseumTicketModalProps {
   isImageLoaded: boolean;
   onEnter: () => void;
@@ -143,40 +232,119 @@ export default function MuseumTicketModal({
   isImageLoaded,
   onEnter,
 }: MuseumTicketModalProps) {
-  const [isDismissing, setIsDismissing] = useState(false);
+  // Alur Rangkaian Animasi:
+  // idle -> stamping -> tearing -> curtains-opening -> done
+  const [animStage, setAnimStage] = useState<'idle' | 'stamping' | 'tearing' | 'curtains-opening' | 'done'>('idle');
+  const [isShaking, setIsShaking] = useState(false);
   const enterButtonRef = useRef<HTMLButtonElement>(null);
+  const timersRef = useRef<Array<ReturnType<typeof setTimeout>>>([]);
+
+  const addTimer = (fn: () => void, ms: number) => {
+    const id = setTimeout(fn, ms);
+    timersRef.current.push(id);
+    return id;
+  };
+
+  // Bersihkan semua timer saat unmount
+  useEffect(() => {
+    return () => {
+      timersRef.current.forEach(clearTimeout);
+      timersRef.current = [];
+    };
+  }, []);
 
   // Otomatis fokus ke tombol "Masuk" saat gambar galeri telah selesai dimuat
   useEffect(() => {
-    if (isImageLoaded && enterButtonRef.current) {
+    if (isImageLoaded && enterButtonRef.current && animStage === 'idle') {
       enterButtonRef.current.focus();
     }
-  }, [isImageLoaded]);
+  }, [isImageLoaded, animStage]);
 
-  const handleEnterClick = () => {
-    if (!isImageLoaded || isDismissing) return;
-    setIsDismissing(true);
-
-    // Animasi keluar tiket (±600 ms) sebelum callback onEnter dipanggil
-    setTimeout(() => {
-      onEnter();
-    }, 600);
+  // Cek apakah user mengaktifkan prefers-reduced-motion
+  const isReducedMotion = () => {
+    return typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   };
+
+  /**
+   * Klik Tombol "Masuk Museum"
+   * Urutan Rangkaian:
+   * 1. Stempel "VALID ♥" (±300 ms) + tiket bergetar sedikit
+   * 2. Jeda ±350 ms
+   * 3. Sobek tiket terbelah dua di garis putus-putus emas (±700 ms)
+   * 4. Tirai beludru membuka ke samping kiri & kanan (±1100 ms)
+   * 5. Selesai -> onEnter() dipanggil
+   */
+  const handleEnterClick = () => {
+    if (!isImageLoaded || animStage !== 'idle') return;
+
+    if (isReducedMotion()) {
+      setAnimStage('stamping');
+      addTimer(() => {
+        setAnimStage('curtains-opening');
+        addTimer(() => {
+          onEnter();
+        }, 300);
+      }, 300);
+      return;
+    }
+
+    // 1. Stempel cap "VALID ♥"
+    setAnimStage('stamping');
+    setIsShaking(true);
+    addTimer(() => setIsShaking(false), 160);
+
+    // 2. Jeda ±350 ms setelah stempel selesai (300 ms + 350 ms = 650 ms)
+    addTimer(() => {
+      // 3. Sobek tiket (durasi ±700 ms)
+      setAnimStage('tearing');
+    }, 650);
+
+    // 4. Setelah sobek selesai (650 ms + 700 ms = 1350 ms), buka tirai panggung
+    addTimer(() => {
+      setAnimStage('curtains-opening');
+    }, 1350);
+
+    // 5. Setelah tirai selesai membuka penuh (1350 ms + 1100 ms = 2450 ms), panggil onEnter
+    addTimer(() => {
+      setAnimStage('done');
+      onEnter();
+    }, 2450);
+  };
+
+  const isButtonDisabled = !isImageLoaded || animStage !== 'idle';
+  const isCurtainsOpen = animStage === 'curtains-opening' || animStage === 'done';
+  const isTorn = animStage === 'tearing' || animStage === 'curtains-opening' || animStage === 'done';
+  const showStamp = animStage !== 'idle';
 
   return (
     <div
       role="dialog"
       aria-modal="true"
       aria-label={`${TICKET_TEXT_CONFIG.title} - ${TICKET_TEXT_CONFIG.header}`}
-      className={`ticket-backdrop-layer ${isDismissing ? 'ticket-backdrop-exit' : ''}`}
+      className={`ticket-backdrop-layer ${isCurtainsOpen ? 'ticket-backdrop-exit' : ''}`}
     >
+      {/* ========================================================
+          1. TIRAI PANGGUNG BELUDRU (PANEL KIRI & KANAN)
+          ======================================================== */}
+      <div className="ticket-curtains-container" aria-hidden="true">
+        {/* Panel Kiri (Membuka ke Kiri translateX(-100%)) */}
+        <div className={`ticket-curtain-panel ticket-curtain-left ${isCurtainsOpen ? 'ticket-curtain-open' : ''}`}>
+          <div className="ticket-curtain-edge-gold" />
+        </div>
+
+        {/* Panel Kanan (Membuka ke Kanan translateX(100%)) */}
+        <div className={`ticket-curtain-panel ticket-curtain-right ${isCurtainsOpen ? 'ticket-curtain-open' : ''}`}>
+          <div className="ticket-curtain-edge-gold" />
+        </div>
+      </div>
+
       {/* Pattern Hati Latar Belakang Samar */}
       <div className="ticket-backdrop-heart-pattern" aria-hidden="true" />
 
       {/* ========================================================
           LAPISAN HIASAN BERANIMASI DI LATAR BELAKANG TIKET
           ======================================================== */}
-      <div className="ticket-decor-layer" aria-hidden="true">
+      <div className={`ticket-decor-layer ${isCurtainsOpen ? 'ticket-backdrop-exit' : ''}`} aria-hidden="true">
         {/* 3. Sinar Lampu Galeri / Museum Spotlight (Kiri Atas & Kanan Atas) */}
         <div className="ticket-spotlight ticket-spotlight-left" />
         <div className="ticket-spotlight ticket-spotlight-right" />
@@ -203,58 +371,14 @@ export default function MuseumTicketModal({
             }
           >
             {f.shape === 'rect' ? (
-              <svg
-                width={f.size}
-                height={f.size * 1.3}
-                viewBox="0 0 50 65"
-                fill="none"
-              >
-                <rect
-                  x="2"
-                  y="2"
-                  width="46"
-                  height="61"
-                  rx="4"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeDasharray="4 2.5"
-                />
-                <rect
-                  x="6"
-                  y="6"
-                  width="38"
-                  height="53"
-                  rx="2"
-                  stroke="currentColor"
-                  strokeWidth="1"
-                  opacity="0.6"
-                />
+              <svg width={f.size} height={f.size * 1.3} viewBox="0 0 50 65" fill="none">
+                <rect x="2" y="2" width="46" height="61" rx="4" stroke="currentColor" strokeWidth="2" strokeDasharray="4 2.5" />
+                <rect x="6" y="6" width="38" height="53" rx="2" stroke="currentColor" strokeWidth="1" opacity="0.6" />
               </svg>
             ) : (
-              <svg
-                width={f.size}
-                height={f.size * 1.25}
-                viewBox="0 0 50 62"
-                fill="none"
-              >
-                <ellipse
-                  cx="25"
-                  cy="31"
-                  rx="22"
-                  ry="28"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                />
-                <ellipse
-                  cx="25"
-                  cy="31"
-                  rx="17"
-                  ry="23"
-                  stroke="currentColor"
-                  strokeWidth="1"
-                  strokeDasharray="3 2"
-                  opacity="0.6"
-                />
+              <svg width={f.size} height={f.size * 1.25} viewBox="0 0 50 62" fill="none">
+                <ellipse cx="25" cy="31" rx="22" ry="28" stroke="currentColor" strokeWidth="2" />
+                <ellipse cx="25" cy="31" rx="17" ry="23" stroke="currentColor" strokeWidth="1" strokeDasharray="3 2" opacity="0.6" />
               </svg>
             )}
           </div>
@@ -264,9 +388,7 @@ export default function MuseumTicketModal({
         {TICKET_FLOATING_HEARTS.map((h, i) => (
           <span
             key={i}
-            className={`ticket-floating-heart ${
-              h.desktopOnly ? 'ticket-decor-desktop-only' : ''
-            }`}
+            className={`ticket-floating-heart ${h.desktopOnly ? 'ticket-decor-desktop-only' : ''}`}
             style={
               {
                 left: h.left,
@@ -287,9 +409,7 @@ export default function MuseumTicketModal({
         {TICKET_STARS.map((s, i) => (
           <span
             key={i}
-            className={`ticket-star-sparkle ${
-              s.desktopOnly ? 'ticket-decor-desktop-only' : ''
-            }`}
+            className={`ticket-star-sparkle ${s.desktopOnly ? 'ticket-decor-desktop-only' : ''}`}
             style={
               {
                 top: s.top,
@@ -301,12 +421,7 @@ export default function MuseumTicketModal({
               } as React.CSSProperties
             }
           >
-            <svg
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              width="100%"
-              height="100%"
-            >
+            <svg viewBox="0 0 24 24" fill="currentColor" width="100%" height="100%">
               <path d="M12 0L14.5 9.5L24 12L14.5 14.5L12 24L9.5 14.5L0 12L9.5 9.5Z" />
             </svg>
           </span>
@@ -314,119 +429,155 @@ export default function MuseumTicketModal({
       </div>
 
       {/* ========================================================
-          KARTU UTAMA TIKET MASUK (Z-Index Lebih Tinggi & Center)
+          KARTU UTAMA TIKET MASUK + KUCING PENYAMBUT
           ======================================================== */}
       <div className="ticket-modal-wrapper">
-        <div
-          className={`ticket-vintage-card ${
-            isDismissing ? 'ticket-vintage-card-exit' : 'ticket-vintage-card-enter'
-          }`}
-        >
-          {/* Efek Kilau Cahaya yang Melintas Sekali */}
-          <div className="ticket-shimmer-sweep" aria-hidden="true" />
+        <div className="ticket-card-box">
+          {/* ========================================================
+              4. KUCING PENYAMBUT BERTENGGER & GELEMBUNG UCAPAN
+              (Diletakkan di luar elemen overflow: hidden kartu tiket)
+              ======================================================== */}
+          <div className={`ticket-cat-anchor ${isTorn ? 'ticket-cat-exit' : ''}`}>
+            {/* Gelembung Ucapan di Sebelah Kiri Kucing, di Atas Tiket */}
+            <div className="ticket-speech-bubble" aria-hidden="true">
+              <span>{WELCOME_MESSAGE}</span>
+            </div>
+
+            {/* Kucing SVG Bertopi Pesta (Duduk di Tepi Atas Tiket, Sedikit ke Kanan) */}
+            <div className="ticket-cat-idle">
+              <WelcomingPartyCat />
+            </div>
+          </div>
+
+          <div
+            className={`ticket-vintage-card ticket-vintage-card-enter ${isShaking ? 'ticket-shaking' : ''}`}
+          >
+            {/* Efek Kilau Cahaya yang Melintas Sekali */}
+            <div className="ticket-shimmer-sweep" aria-hidden="true" />
 
           {/* Hiasan Ikon Hati di Sudut Kanan Atas */}
           <div className="ticket-corner-heart" aria-hidden="true">
             ♥
           </div>
 
-          {/* BAGIAN UTAMA TIKET */}
-          <div className="ticket-main-section">
-            {/* Header: MUSEUM OF US */}
-            <div
-              className="ticket-stagger-item"
-              style={{ '--stagger': 0 } as React.CSSProperties}
-            >
-              <span className="ticket-brand-header">
-                {TICKET_TEXT_CONFIG.header}
-              </span>
+          {/* ========================================================
+              2. STEMPEL "VALID ♥" (CAP UNGU TUA SAAT KLIK)
+              ======================================================== */}
+          {showStamp && (
+            <div className="ticket-stamp-seal" aria-hidden="true">
+              <span>{STAMP_TEXT}</span>
             </div>
+          )}
 
-            {/* Judul Utama: Tiket Masuk */}
-            <div
-              className="ticket-stagger-item"
-              style={{ '--stagger': 1 } as React.CSSProperties}
-            >
-              <h1 className="ticket-main-title">
-                {TICKET_TEXT_CONFIG.title}
-              </h1>
-            </div>
+          {/* ========================================================
+              2.c SOBEK TIKET (BAGIAN ATAS & BAGIAN BAWAH)
+              ======================================================== */}
+          <div className="ticket-split-wrapper">
+            {/* BAGIAN ATAS TIKET */}
+            <div className={`ticket-half-top ${isTorn ? 'ticket-torn-top' : ''}`}>
+              <div className="ticket-main-section">
+                {/* Header: MUSEUM OF US */}
+                <div
+                  className="ticket-stagger-item"
+                  style={{ '--stagger': 0 } as React.CSSProperties}
+                >
+                  <span className="ticket-brand-header">
+                    {TICKET_TEXT_CONFIG.header}
+                  </span>
+                </div>
 
-            {/* Subjudul Miring Emas: 1 orang istimewa */}
-            <div
-              className="ticket-stagger-item"
-              style={{ '--stagger': 2 } as React.CSSProperties}
-            >
-              <p className="ticket-subtitle-gold">
-                {TICKET_TEXT_CONFIG.subtitle}
-              </p>
-            </div>
-          </div>
+                {/* Judul Utama: Tiket Masuk */}
+                <div
+                  className="ticket-stagger-item"
+                  style={{ '--stagger': 1 } as React.CSSProperties}
+                >
+                  <h1 className="ticket-main-title">
+                    {TICKET_TEXT_CONFIG.title}
+                  </h1>
+                </div>
 
-          {/* GARIS PERFORASI VINTAGE (GIGI SETENGAH LINGKARAN & PUTUS-PUTUS EMAS) */}
-          <div className="ticket-perforation-divider" aria-hidden="true">
-            <span className="ticket-perforation-notch notch-left" />
-            <span className="ticket-dashed-line" />
-            <span className="ticket-perforation-notch notch-right" />
-          </div>
+                {/* Subjudul Miring Emas: 1 orang istimewa */}
+                <div
+                  className="ticket-stagger-item"
+                  style={{ '--stagger': 2 } as React.CSSProperties}
+                >
+                  <p className="ticket-subtitle-gold">
+                    {TICKET_TEXT_CONFIG.subtitle}
+                  </p>
+                </div>
+              </div>
 
-          {/* BAGIAN BAWAH / SOBEKAN TIKET (STUB) */}
-          <div className="ticket-stub-section">
-            <div
-              className="ticket-stub-meta ticket-stagger-item"
-              style={{ '--stagger': 4 } as React.CSSProperties}
-            >
-              {/* Nomor Tiket */}
-              <span className="ticket-number-tag">
-                {TICKET_TEXT_CONFIG.ticketNumber}
-              </span>
-
-              {/* Barcode Dekoratif Vintage */}
-              <div className="ticket-barcode-lines" aria-hidden="true">
-                {[2, 1, 3, 1, 4, 1, 2, 3, 1, 4, 2, 1, 3, 2, 1, 4, 1, 2, 3, 1, 4, 2].map((w, i) => (
-                  <span
-                    key={i}
-                    style={{
-                      width: `${w}px`,
-                      height: '24px',
-                      backgroundColor: '#52345E',
-                      display: 'inline-block',
-                      marginRight: i % 4 === 0 ? '3px' : '1.5px',
-                      opacity: 0.8,
-                    }}
-                  />
-                ))}
+              {/* GARIS PERFORASI VINTAGE (GIGI SETENGAH LINGKARAN & PUTUS-PUTUS EMAS) */}
+              <div className="ticket-perforation-divider" aria-hidden="true">
+                <span className="ticket-perforation-notch notch-left" />
+                <span className="ticket-dashed-line" />
+                <span className="ticket-perforation-notch notch-right" />
               </div>
             </div>
 
-            {/* TOMBOL MASUK */}
-            <div
-              className="ticket-stagger-item"
-              style={{ '--stagger': 5, width: '100%' } as React.CSSProperties}
-            >
-              <button
-                ref={enterButtonRef}
-                type="button"
-                onClick={handleEnterClick}
-                disabled={!isImageLoaded || isDismissing}
-                aria-label={TICKET_TEXT_CONFIG.buttonAriaLabel}
-                className={`ticket-enter-button ${
-                  isImageLoaded ? 'ticket-enter-button-ready' : 'ticket-enter-button-disabled'
-                }`}
-              >
-                <span>{TICKET_TEXT_CONFIG.buttonText}</span>
-                <span className="ticket-enter-arrow" aria-hidden="true">
-                  →
-                </span>
-              </button>
+            {/* BAGIAN BAWAH TIKET (STUB) */}
+            <div className={`ticket-half-bottom ${isTorn ? 'ticket-torn-bottom' : ''}`}>
+              <div className="ticket-stub-section">
+                <div
+                  className="ticket-stub-meta ticket-stagger-item"
+                  style={{ '--stagger': 4 } as React.CSSProperties}
+                >
+                  {/* Nomor Tiket */}
+                  <span className="ticket-number-tag">
+                    {TICKET_TEXT_CONFIG.ticketNumber}
+                  </span>
+
+                  {/* Barcode Dekoratif Vintage */}
+                  <div className="ticket-barcode-lines" aria-hidden="true">
+                    {[2, 1, 3, 1, 4, 1, 2, 3, 1, 4, 2, 1, 3, 2, 1, 4, 1, 2, 3, 1, 4, 2].map((w, i) => (
+                      <span
+                        key={i}
+                        style={{
+                          width: `${w}px`,
+                          height: '24px',
+                          backgroundColor: '#52345E',
+                          display: 'inline-block',
+                          marginRight: i % 4 === 0 ? '3px' : '1.5px',
+                          opacity: 0.8,
+                        }}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                {/* TOMBOL MASUK */}
+                <div
+                  className="ticket-stagger-item"
+                  style={{ '--stagger': 5, width: '100%' } as React.CSSProperties}
+                >
+                  <button
+                    ref={enterButtonRef}
+                    type="button"
+                    onClick={handleEnterClick}
+                    disabled={isButtonDisabled}
+                    aria-label={TICKET_TEXT_CONFIG.buttonAriaLabel}
+                    className={`ticket-enter-button ${
+                      isImageLoaded && animStage === 'idle'
+                        ? 'ticket-enter-button-ready'
+                        : 'ticket-enter-button-disabled'
+                    }`}
+                  >
+                    <span>{TICKET_TEXT_CONFIG.buttonText}</span>
+                    <span className="ticket-enter-arrow" aria-hidden="true">
+                      →
+                    </span>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* TULISAN LOADING DI BAWAH TIKET (Aktif sampai gambar galeri selesai dimuat) */}
+      {/* TULISAN LOADING DI BAWAH TIKET (Aktif sampai gambar galeri selesai dimuat) */}
         <div
           className={`ticket-loading-footer ${
-            isImageLoaded ? 'ticket-loading-footer-hidden' : ''
+            isImageLoaded || animStage !== 'idle' ? 'ticket-loading-footer-hidden' : ''
           }`}
           aria-live="polite"
           aria-busy={!isImageLoaded}
