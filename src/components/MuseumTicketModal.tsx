@@ -4,11 +4,10 @@ import React, { useState, useEffect, useRef } from 'react';
 
 /**
  * =======================================================================
- * KONSTANTA TEKS STEMPEL & PESAN KUCING (Dapat diganti di sini)
+ * KONSTANTA TEKS STEMPEL (Dapat diganti di sini)
  * =======================================================================
  */
 export const STAMP_TEXT = 'VALID ♥';
-export const WELCOME_MESSAGE = 'Selamat datang! Jangan lupa klik semua bingkai ya ♥';
 
 /**
  * =======================================================================
@@ -16,9 +15,9 @@ export const WELCOME_MESSAGE = 'Selamat datang! Jangan lupa klik semua bingkai y
  * =======================================================================
  */
 export const TICKET_TEXT_CONFIG = {
-  header: 'MUSEUM OF US',
+  header: 'Welcome cinta',
   title: 'Tiket Masuk',
-  subtitle: '1 orang istimewa',
+  subtitle: 'MUSEUM OF US',
   ticketNumber: 'No. 0021',
   loadingText: 'menyiapkan museum, sabar ya sayangg',
   buttonText: 'Masuk Museum',
@@ -139,87 +138,6 @@ function CornerOrnament({
         />
       </svg>
     </div>
-  );
-}
-
-/**
- * Kucing Penyambut Bertopi Pesta Ulang Tahun (SVG Vektor Tajam)
- */
-function WelcomingPartyCat() {
-  return (
-    <svg
-      className="ticket-cat-svg"
-      width="96"
-      height="86"
-      viewBox="0 0 92 82"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-    >
-      {/* Bayangan Bawah Cakar */}
-      <ellipse cx="46" cy="78" rx="30" ry="4" fill="rgba(20, 8, 30, 0.28)" />
-
-      {/* Topi Pesta Ulang Tahun (Party Cone Hat) */}
-      <g transform="translate(43, 6) rotate(8)">
-        <polygon points="12,0 0,34 24,34" fill="#6A478D" />
-        <path d="M4 28 Q12 25 20 28" stroke="#F3CE6E" strokeWidth="2.5" strokeLinecap="round" />
-        <path d="M7 18 Q12 15 17 18" stroke="#F3CE6E" strokeWidth="2" strokeLinecap="round" />
-        <path d="M9 9 Q12 7 15 9" stroke="#F3CE6E" strokeWidth="1.5" strokeLinecap="round" />
-        <circle cx="12" cy="-1" r="4" fill="#FFD700" />
-        <circle cx="12" cy="-1" r="2.5" fill="#FFF4D0" />
-      </g>
-
-      {/* Telinga Kiri */}
-      <polygon points="18,36 10,14 32,24" fill="#FFB074" />
-      <polygon points="19,33 13,18 29,24" fill="#FFAAA6" />
-
-      {/* Telinga Kanan */}
-      <polygon points="74,36 82,14 60,24" fill="#FFB074" />
-      <polygon points="73,33 79,18 63,24" fill="#FFAAA6" />
-
-      {/* Kepala Kucing Bulat Imut */}
-      <ellipse cx="46" cy="46" rx="36" ry="30" fill="#FFB074" />
-      {/* Pipi & Moncong Krem Cerah */}
-      <ellipse cx="46" cy="52" rx="26" ry="18" fill="#FFF3E0" />
-
-      {/* Mata Kiri Berbinar */}
-      <ellipse cx="32" cy="42" rx="5" ry="6.5" fill="#241030" />
-      <circle cx="30.5" cy="40" r="2.2" fill="#FFFFFF" />
-      <circle cx="33.5" cy="44.5" r="1.1" fill="#FFFFFF" />
-
-      {/* Mata Kanan Berbinar */}
-      <ellipse cx="60" cy="42" rx="5" ry="6.5" fill="#241030" />
-      <circle cx="58.5" cy="40" r="2.2" fill="#FFFFFF" />
-      <circle cx="61.5" cy="44.5" r="1.1" fill="#FFFFFF" />
-
-      {/* Pipi Merona (Blush Pink) */}
-      <ellipse cx="23" cy="50" rx="4.5" ry="3" fill="rgba(255, 130, 150, 0.45)" />
-      <ellipse cx="69" cy="50" rx="4.5" ry="3" fill="rgba(255, 130, 150, 0.45)" />
-
-      {/* Hidung Segitiga Pink Lucu */}
-      <polygon points="46,47 43.5,44 48.5,44" fill="#E86A82" />
-
-      {/* Mulut Melengkung Imut (ω) */}
-      <path d="M42 49 Q44 52 46 49 Q48 52 50 49" stroke="#4A2035" strokeWidth="1.5" strokeLinecap="round" fill="none" />
-
-      {/* Kumis Kiri */}
-      <line x1="14" y1="46" x2="26" y2="48" stroke="#4A2035" strokeWidth="1.2" strokeLinecap="round" opacity="0.65" />
-      <line x1="13" y1="52" x2="25" y2="52" stroke="#4A2035" strokeWidth="1.2" strokeLinecap="round" opacity="0.65" />
-      <line x1="15" y1="58" x2="27" y2="56" stroke="#4A2035" strokeWidth="1.2" strokeLinecap="round" opacity="0.65" />
-
-      {/* Kumis Kanan */}
-      <line x1="78" y1="46" x2="66" y2="48" stroke="#4A2035" strokeWidth="1.2" strokeLinecap="round" opacity="0.65" />
-      <line x1="79" y1="52" x2="67" y2="52" stroke="#4A2035" strokeWidth="1.2" strokeLinecap="round" opacity="0.65" />
-      <line x1="77" y1="58" x2="65" y2="56" stroke="#4A2035" strokeWidth="1.2" strokeLinecap="round" opacity="0.65" />
-
-      {/* Dua Cakar Depan Kecil Bersandar di Tepi Atas Tiket */}
-      <ellipse cx="32" cy="74" rx="7.5" ry="6" fill="#FFF3E0" stroke="#FFB074" strokeWidth="1.5" />
-      <ellipse cx="60" cy="74" rx="7.5" ry="6" fill="#FFF3E0" stroke="#FFB074" strokeWidth="1.5" />
-      <line x1="30" y1="73" x2="30" y2="76" stroke="#FFB074" strokeWidth="1" strokeLinecap="round" />
-      <line x1="34" y1="73" x2="34" y2="76" stroke="#FFB074" strokeWidth="1" strokeLinecap="round" />
-      <line x1="58" y1="73" x2="58" y2="76" stroke="#FFB074" strokeWidth="1" strokeLinecap="round" />
-      <line x1="62" y1="73" x2="62" y2="76" stroke="#FFB074" strokeWidth="1" strokeLinecap="round" />
-    </svg>
   );
 }
 
@@ -429,31 +347,14 @@ export default function MuseumTicketModal({
       </div>
 
       {/* ========================================================
-          KARTU UTAMA TIKET MASUK + KUCING PENYAMBUT
+          KARTU UTAMA TIKET MASUK
           ======================================================== */}
       <div className="ticket-modal-wrapper">
-        <div className="ticket-card-box">
-          {/* ========================================================
-              4. KUCING PENYAMBUT BERTENGGER & GELEMBUNG UCAPAN
-              (Diletakkan di luar elemen overflow: hidden kartu tiket)
-              ======================================================== */}
-          <div className={`ticket-cat-anchor ${isTorn ? 'ticket-cat-exit' : ''}`}>
-            {/* Gelembung Ucapan di Sebelah Kiri Kucing, di Atas Tiket */}
-            <div className="ticket-speech-bubble" aria-hidden="true">
-              <span>{WELCOME_MESSAGE}</span>
-            </div>
-
-            {/* Kucing SVG Bertopi Pesta (Duduk di Tepi Atas Tiket, Sedikit ke Kanan) */}
-            <div className="ticket-cat-idle">
-              <WelcomingPartyCat />
-            </div>
-          </div>
-
-          <div
-            className={`ticket-vintage-card ticket-vintage-card-enter ${isShaking ? 'ticket-shaking' : ''}`}
-          >
-            {/* Efek Kilau Cahaya yang Melintas Sekali */}
-            <div className="ticket-shimmer-sweep" aria-hidden="true" />
+        <div
+          className={`ticket-vintage-card ticket-vintage-card-enter ${isShaking ? 'ticket-shaking' : ''}`}
+        >
+          {/* Efek Kilau Cahaya yang Melintas Sekali */}
+          <div className="ticket-shimmer-sweep" aria-hidden="true" />
 
           {/* Hiasan Ikon Hati di Sudut Kanan Atas */}
           <div className="ticket-corner-heart" aria-hidden="true">
@@ -572,9 +473,8 @@ export default function MuseumTicketModal({
             </div>
           </div>
         </div>
-      </div>
 
-      {/* TULISAN LOADING DI BAWAH TIKET (Aktif sampai gambar galeri selesai dimuat) */}
+        {/* TULISAN LOADING DI BAWAH TIKET (Aktif sampai gambar galeri selesai dimuat) */}
         <div
           className={`ticket-loading-footer ${
             isImageLoaded || animStage !== 'idle' ? 'ticket-loading-footer-hidden' : ''
