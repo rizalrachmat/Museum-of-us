@@ -648,6 +648,10 @@ html, body {
 /* POPUP SURAT SUNGGUHAN (User Requirements #1, 2, 3, 4, 5) */
 /* =================================================== */
 
+/* =================================================== */
+/* POPUP SURAT (KARTU KREM DI TENGAH DENGAN ANIMASI)   */
+/* =================================================== */
+
 .modal-backdrop-layer {
   position: fixed;
   inset: 0;
@@ -659,19 +663,30 @@ html, body {
   overflow: hidden;
 }
 
-/* Dark semi-transparent overlay — cukup gelap agar surat terbaca,
-   tapi latar hati kaca tetap terasa di belakang */
+/* 1. Latar gelap ungu + blur: fade-in halus (300 ms), fade-out saat ditutup */
 .modal-dark-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(22, 10, 36, 0.72);
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
+  background: rgba(22, 10, 36, 0.76);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   cursor: pointer;
   z-index: 101;
+  opacity: 1;
+  animation: overlayFadeIn 300ms ease-out forwards;
+  transition: opacity 200ms ease-in;
 }
 
-/* Real HTML Return Button (Pojok Kanan Atas, Min 44x44px touch area) */
+.modal-backdrop-layer.modal-closing .modal-dark-overlay {
+  opacity: 0;
+}
+
+@keyframes overlayFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Tombol Tutup ✕ di Pojok Kanan Atas (Min 44x44 px) */
 .real-return-button {
   position: fixed;
   top: 16px;
@@ -682,7 +697,7 @@ html, body {
   min-height: 44px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.22);
-  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  border: 1.5px solid rgba(255, 255, 255, 0.45);
   color: #FFFFFF;
   display: flex;
   align-items: center;
@@ -690,8 +705,10 @@ html, body {
   cursor: pointer;
   z-index: 130;
   backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: buttonFadeIn 250ms ease-out forwards;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s ease, opacity 200ms ease-in;
   touch-action: manipulation;
 }
 
@@ -704,242 +721,210 @@ html, body {
   transform: scale(0.94);
 }
 
-.return-icon-svg {
-  width: 24px;
-  height: 24px;
-  transform: scaleX(-1);
+.modal-backdrop-layer.modal-closing .real-return-button {
+  opacity: 0;
+  transform: scale(0.92);
 }
 
-/* =================================================== */
-/* POPUP SURAT KERTAS KREM ELEGAN & DUA KOLOM          */
-/* =================================================== */
+@keyframes buttonFadeIn {
+  from { opacity: 0; transform: scale(0.85); }
+  to   { opacity: 1; transform: scale(1); }
+}
 
+/* 2. Kartu surat: animasi pegas ringan cubic-bezier(0.34, 1.56, 0.64, 1) durasi 450 ms */
 .letter-stage-wrapper {
   position: relative;
   z-index: 110;
-  width: min(92vw, 840px);
+  width: min(92vw, 540px);
   max-height: 85dvh;
   display: flex;
   align-items: center;
   justify-content: center;
   pointer-events: auto;
+  animation: cardSpringIn 450ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  transition: transform 200ms ease-in, opacity 200ms ease-in;
 }
 
-.letter-cream-card {
+/* 4. Animasi keluar saat ditutup: kartu mengecil sedikit (scale 0.95) & memudar (200 ms) */
+.modal-backdrop-layer.modal-closing .letter-stage-wrapper {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+@keyframes cardSpringIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Kartu Kertas Krem di Tengah */
+.fallback-cream-card {
   width: 100%;
   max-height: 85dvh;
-  background: linear-gradient(135deg, #FFFDF8 0%, #FAF5EE 55%, #F4EAD9 100%);
-  background-image: radial-gradient(rgba(180, 150, 110, 0.12) 1px, transparent 1px);
-  background-size: 16px 16px;
+  background: #FAF6EE;
+  background-image: radial-gradient(#E8DFC8 1.2px, transparent 1.2px);
+  background-size: 14px 14px;
   color: #2D1438;
   border-radius: 24px;
-  border: 1.5px solid rgba(212, 162, 76, 0.45);
+  border: 1.5px solid rgba(212, 175, 55, 0.45);
   box-shadow:
-    0 25px 65px rgba(20, 8, 30, 0.65),
-    0 0 0 1px rgba(255, 255, 255, 0.8) inset,
-    0 0 20px rgba(212, 175, 55, 0.15);
+    0 24px 60px rgba(0, 0, 0, 0.65),
+    0 0 0 1px rgba(255, 255, 255, 0.6) inset,
+    0 0 16px rgba(212, 175, 55, 0.2);
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   position: relative;
-  overflow: hidden;
 }
 
-/* Layout Dua Kolom (Desktop: Foto kiri, Surat kanan) */
-.letter-content-layout {
-  display: grid;
-  width: 100%;
-  max-height: 85dvh;
-  overflow: hidden;
+/* 3. Isi kartu muncul berurutan (stagger ±90 ms: fade + naik tipis) */
+.stagger-item {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: staggerFadeUp 350ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.letter-content-layout.has-photo {
-  grid-template-columns: 280px 1fr;
-  gap: 28px;
-  padding: 32px 36px;
-  align-items: center;
+.stagger-1 { animation-delay: 90ms; }
+.stagger-2 { animation-delay: 180ms; }
+.stagger-3 { animation-delay: 270ms; }
+.stagger-4 { animation-delay: 360ms; }
+.stagger-5 { animation-delay: 450ms; }
+
+@keyframes staggerFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.letter-content-layout.no-photo {
-  grid-template-columns: 1fr;
-  padding: 36px 40px;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-/* Kolom Kiri: Foto Bingkai */
-.letter-photo-col {
+/* Bagian Header Kartu */
+.fallback-card-header {
+  padding: 24px 28px 14px 28px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  gap: 2px;
 }
 
-.letter-photo-frame {
-  position: relative;
-  width: 100%;
-  max-width: 260px;
-  aspect-ratio: 4 / 3;
-  border-radius: 14px;
-  overflow: hidden;
-  border: 3px solid #D4AF37;
-  box-shadow:
-    0 10px 24px rgba(0, 0, 0, 0.35),
-    0 0 0 1px rgba(255, 255, 255, 0.4) inset;
-  background: #2D1B42;
-}
-
-.letter-photo-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.letter-photo-inner-shadow {
-  position: absolute;
-  inset: 0;
-  box-shadow: inset 0 0 16px rgba(40, 10, 50, 0.4);
-  pointer-events: none;
-}
-
-.letter-photo-caption {
-  margin-top: 10px;
+.fallback-badge {
+  display: inline-block;
   font-size: 11px;
-  font-style: italic;
-  color: #8A6D4B;
-  text-align: center;
-  line-height: 1.4;
-}
-
-/* Kolom Kanan: Teks Surat */
-.letter-text-col {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  overflow: hidden;
-  min-height: 260px;
-}
-
-.letter-header-meta {
-  display: flex;
-  align-items: center;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #7058A3;
   margin-bottom: 4px;
 }
 
-.letter-badge-tag {
-  display: inline-block;
-  padding: 4px 12px;
-  border-radius: 16px;
-  background: rgba(112, 88, 163, 0.12);
-  color: #7058A3;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.letter-title-serif {
+.fallback-title {
   font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
-  font-size: clamp(20px, 2.4vw, 28px);
+  font-size: clamp(20px, 2.5vw, 24px);
   font-weight: 800;
-  color: #47225D;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  margin: 4px 0 0 0;
+  color: #4A2362;
+  letter-spacing: 0.03em;
   line-height: 1.25;
+  text-transform: uppercase;
 }
 
-.letter-gold-divider {
+.fallback-note-tag {
+  display: block;
+  font-size: 12px;
+  font-style: italic;
+  color: #7A6048;
+  margin-top: 2px;
+}
+
+/* Garis Pemisah Emas di Dalam Kartu */
+.letter-divider {
   width: 100%;
   height: 1.5px;
-  background: linear-gradient(90deg, transparent 0%, #D4AF37 50%, transparent 100%);
-  margin: 10px 0 14px 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(212, 175, 55, 0.7) 40%, rgba(212, 175, 55, 0.7) 60%, transparent 100%);
+  margin-top: 10px;
 }
 
-/* Isi Surat Scrollable */
-.letter-body-scrollable {
+/* Bagian Isi Surat (Teks Tampil Penuh dan Jelas, Scrollable jika Panjang) */
+.fallback-card-body {
+  padding: 16px 28px 24px 28px;
   overflow-y: auto;
-  max-height: clamp(160px, 38vh, 280px);
-  padding-right: 8px;
-  cursor: pointer;
-  user-select: text;
+  max-height: calc(85dvh - 160px);
 }
 
-.letter-body-scrollable::-webkit-scrollbar {
+.fallback-card-body::-webkit-scrollbar {
   width: 5px;
 }
-.letter-body-scrollable::-webkit-scrollbar-track {
+.fallback-card-body::-webkit-scrollbar-track {
   background: rgba(180, 150, 110, 0.15);
   border-radius: 4px;
 }
-.letter-body-scrollable::-webkit-scrollbar-thumb {
+.fallback-card-body::-webkit-scrollbar-thumb {
   background: rgba(212, 175, 55, 0.5);
   border-radius: 4px;
 }
 
-.letter-message-text {
-  font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
-  font-size: clamp(15px, 1.35vw, 17px);
+.fallback-letter-text {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(15px, 1.35vw, 16.5px);
   line-height: 1.85;
-  color: #2D1438;
+  color: #241030;
   white-space: pre-line;
-  margin: 0;
 }
 
-.letter-cursor {
-  display: inline-block;
-  margin-left: 2px;
-  color: #7058A3;
-  font-weight: 700;
-  animation: cursorBlink 0.75s infinite;
-}
-
-@keyframes cursorBlink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-/* Footer Surat: "MUSEUM OF US" */
-.letter-card-footer {
-  margin-top: 16px;
-  padding-top: 12px;
-  border-top: 1px solid rgba(180, 150, 110, 0.22);
+/* Bagian Footer Kartu */
+.fallback-card-footer {
+  padding: 12px 28px;
+  background: rgba(235, 225, 210, 0.6);
+  border-top: 1px solid rgba(160, 130, 90, 0.22);
   display: flex;
   align-items: center;
   justify-content: space-between;
   font-size: 11px;
+  color: #6C5540;
 }
 
-.letter-footer-brand {
+.fallback-status-info {
+  font-size: 10px;
+  color: #7E5F38;
+}
+
+.fallback-footer-brand {
   font-family: 'Cinzel', serif;
   font-weight: 700;
   letter-spacing: 0.12em;
   color: #7058A3;
+  margin-left: auto;
 }
 
-.letter-dev-status {
-  color: #8A6D4B;
-  font-size: 10px;
-  font-style: italic;
+/* 5. Hormati prefers-reduced-motion: ganti animasi dengan fade sederhana tanpa gerak */
+@media (prefers-reduced-motion: reduce) {
+  .modal-dark-overlay,
+  .real-return-button,
+  .letter-stage-wrapper,
+  .stagger-item {
+    animation-name: simpleModalFadeIn !important;
+    animation-duration: 200ms !important;
+    animation-delay: 0ms !important;
+    transform: none !important;
+  }
+
+  .modal-backdrop-layer.modal-closing .letter-stage-wrapper,
+  .modal-backdrop-layer.modal-closing .modal-dark-overlay,
+  .modal-backdrop-layer.modal-closing .real-return-button {
+    transition: opacity 150ms ease !important;
+    transform: none !important;
+  }
 }
 
-/* Responsive HP (< 768px): Foto di atas, surat di bawah, max 92vw / 85vh */
-@media (max-width: 768px) {
-  .letter-content-layout.has-photo {
-    grid-template-columns: 1fr;
-    gap: 16px;
-    padding: 24px 20px;
-    overflow-y: auto;
-  }
-  .letter-photo-frame {
-    max-width: 200px;
-  }
-  .letter-title-serif {
-    font-size: 20px;
-  }
-  .letter-body-scrollable {
-    max-height: 32vh;
-  }
+@keyframes simpleModalFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 
